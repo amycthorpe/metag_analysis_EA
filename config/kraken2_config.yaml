@@ -1,0 +1,48 @@
+############################################################
+# STEPS
+
+# Steps to be done
+steps: ["taxonomy", "assembly"]
+
+
+############################################################
+# INPUT
+# Directory where the workflow exists
+work_dir: "/ssd0/susbus/socd/kraken2"
+
+# Directory where the data files are
+data_dir: "/ssd0/susbus/socd/data/preprocessed" #"/hdd0/susbus/nf_core/data/hebe_16S"
+
+# Directory for the results
+results_dir: "/ssd0/susbus/socd/results"
+
+# Directory where the conda environments are
+env_dir: "/ssd0/susbus/socd/kraken2/envs"
+
+# Directory with scripts
+src_dir: "/ssd0/susbus/socd/kraken2/scripts"
+  
+############################################################
+# TOOLS 
+kraken2:
+  db: "/hdd0/susbus/databases/kraken2/pluspfp/"
+  confidence: 0.5
+  threads: 12
+  read: 150
+  level: "S" # https://github.com/jenniferlu717/Bracken/issues/117
+
+# Struo2 database from the Ruth Ley lab
+struo2_kraken2:
+  db: "/hdd0/susbus/databases/kraken2/"
+  threads: 12
+
+# Bracken
+# Bracken installed based on information here: https://github.com/jenniferlu717/Bracken
+bracken:
+  bin: "/hdd0/susbus/tools/Bracken/bracken"
+  combine: "/hdd0/susbus/tools/Bracken/analysis_scripts/combine_bracken_outputs.py"
+
+# MEGAHIT
+# https://github.com/voutcn/megahit
+megahit:
+  threads: 12
