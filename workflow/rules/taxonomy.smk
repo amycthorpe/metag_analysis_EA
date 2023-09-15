@@ -45,8 +45,8 @@ rule kraken2:
     message:
         "Running kraken2 on {wildcards.sid}"
     shell:
-        "(date && kraken2 --threads {threads} --db {params.db} --paired --output {output.summary} --report {output.report} {input} && date) &> >(tee {log})"
-#        "(date && kraken2 --threads {threads} --db {params.db} --confidence {params.confidence} --paired --output {output.summary} --report {output.report} {input} && date) &> >(tee {log})"
+        "(date && kraken2 --threads {threads} --db {params.db} --confidence {params.confidence} --paired --output {output.summary} --report {output.report} {input} && date) &> >(tee {log})"
+#        "(date && kraken2 --threads {threads} --db {params.db} --paired --output {output.summary} --report {output.report} {input} && date) &> >(tee {log})"
 
 # Running Struo2 database
 use rule kraken2 as struo2_kraken2 with:
