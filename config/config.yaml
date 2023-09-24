@@ -14,7 +14,7 @@ work_dir: "/ssd0/susbus/socd/kraken2"
 data_dir: "/ssd0/susbus/socd/data/preprocessed" #"/hdd0/susbus/nf_core/data/hebe_16S"
 
 # Directory for the results
-results_dir: "/ssd0/susbus/socd/results"
+results_dir: "/hdd0/susbus/socd/results"
 
 # Directory where the conda environments are
 env_dir: "/ssd0/susbus/socd/kraken2/envs"
