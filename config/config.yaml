@@ -2,13 +2,13 @@
 # STEPS
 
 # Steps to be done
-steps: ["taxonomy", "assembly"]
+steps: ["taxonomy", "assembly", "coassembly"]
 
 
 ############################################################
 # INPUT
 # Directory where the workflow exists
-work_dir: "/ssd0/susbus/socd/kraken2"
+work_dir: "/ssd0/susbus/socd/metag_analyses"
 
 # Directory where the data files are
 data_dir: "/ssd0/susbus/socd/data/preprocessed" #"/hdd0/susbus/nf_core/data/hebe_16S"
@@ -17,10 +17,10 @@ data_dir: "/ssd0/susbus/socd/data/preprocessed" #"/hdd0/susbus/nf_core/data/hebe
 results_dir: "/hdd0/susbus/socd/results"
 
 # Directory where the conda environments are
-env_dir: "/ssd0/susbus/socd/kraken2/envs"
+env_dir: "/ssd0/susbus/socd/metag_analyses/envs"
 
 # Directory with scripts
-src_dir: "/ssd0/susbus/socd/kraken2/scripts"
+src_dir: "/ssd0/susbus/socd/metag_analyses/scripts"
   
 ############################################################
 # TOOLS 
@@ -46,3 +46,11 @@ bracken:
 # https://github.com/voutcn/megahit
 megahit:
   threads: 12
+  coassembly_threads: 70
+
+# DE-DUPLICATION
+clumpify:
+  threads: 64
+  dupedist: 12000
+  groups: 50
+  memory: "2000g"

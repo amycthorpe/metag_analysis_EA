@@ -51,6 +51,14 @@ if "assembly" in STEPS:
         "status/assembly.done"
     ]
 
+# Co-Assembly
+if "coassembly" in STEPS:
+    include:
+        "rules/coassembly.smk"
+    TARGETS += [
+        "status/coassembly.done"
+    ]
+
 
 # No targets
 if len(TARGETS) == 0:
