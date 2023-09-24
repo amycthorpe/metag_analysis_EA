@@ -34,7 +34,7 @@ chmod u+x Miniconda3-latest-Linux-x86_64.sh
 
 Getting the repository including sub-modules
 ```bash
-git clone git@github.com:susheelbhanu/metag_analyses.git
+git clone git@github.com:UKCEH-MolecularEcology/metag_analyses.git
 ```
 
 Create the main `snakemake` environment
@@ -52,13 +52,13 @@ The workflow can be launched using one of the option as follows
 ```bash
 snake_cores=48    # adjust as needed
 snake_jobs=4   # adjust as needed
-conda_prefix="/ssd0/susbus/conda_env"
+conda_prefix="/hdd0/susbus/tools/conda_env"
 
 # dry-run
-snakemake -s kraken2_Snakefile --configfile config/kraken2_config.yaml --use-conda --conda-prefix ${conda_prefix} --cores ${snake_cores} --jobs ${snake_jobs} --conda-frontend conda --rerun-trigger mtime -rpn  
+snakemake -s workflow/Snakefile --configfile config/config.yaml --use-conda --conda-prefix ${conda_prefix} --cores ${snake_cores} --jobs ${snake_jobs} --conda-frontend conda --rerun-trigger mtime -rpn  
 
 # full run
-snakemake -s kraken2_Snakefile --configfile config/kraken2_config.yaml --use-conda --conda-prefix ${conda_prefix} --cores ${snake_cores} --jobs ${snake_jobs} --conda-frontend conda --rerun-trigger mtime -rp
+snakemake -s workflow/Snakefile --configfile config/config.yaml --use-conda --conda-prefix ${conda_prefix} --cores ${snake_cores} --jobs ${snake_jobs} --conda-frontend conda --rerun-trigger mtime -rp
 ```
 
 
