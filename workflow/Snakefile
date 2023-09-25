@@ -67,6 +67,13 @@ if "coassembly" in STEPS:
         "status/coassembly.done"
     ]
 
+# Annotation
+if "annotation" in STEPS:
+    include:
+        "rules/annotation.smk"
+    TARGETS += [
+        "status/annotation.done"
+    ]
 
 # No targets
 if len(TARGETS) == 0:

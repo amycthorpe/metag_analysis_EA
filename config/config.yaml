@@ -2,7 +2,7 @@
 # STEPS
 
 # Steps to be done
-steps: ["taxonomy", "assembly", "contig_taxonomy", "coassembly"]
+steps: ["taxonomy", "assembly", "contig_taxonomy", "coassembly", "annotation"]
 
 
 ############################################################
