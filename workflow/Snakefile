@@ -51,6 +51,14 @@ if "assembly" in STEPS:
         "status/assembly.done"
     ]
 
+# Contig taxonomy
+if "contig_taxonomy" in STEPS:
+    include:
+        "rules/contig_taxonomy.smk"
+    TARGETS += [
+        "status/contig_taxonomy.done"
+    ]
+
 # Co-Assembly
 if "coassembly" in STEPS:
     include:

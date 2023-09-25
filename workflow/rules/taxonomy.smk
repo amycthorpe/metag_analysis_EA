@@ -11,7 +11,7 @@ Purpose: To run Kraken2+BRACKEN on reads
 ############################################
 rule taxonomy:
     input:
-        expand(os.path.join(RESULTS_DIR, "{sid}_kraken.report"), sid=SAMPLES), 
+        expand(os.path.join(RESULTS_DIR, "kraken2/{sid}_kraken.report"), sid=SAMPLES), 
         expand(os.path.join(RESULTS_DIR, "bracken/{sid}.bracken"), sid=SAMPLES),
         expand(os.path.join(RESULTS_DIR, "mpa_report/{sid}_mpa.tsv"), sid=SAMPLES),
         os.path.join(RESULTS_DIR, "mpa_report/combined_output.tsv"),
@@ -31,8 +31,8 @@ rule kraken2:
         os.path.join(DATA_DIR, "{sid}_R1.fq.gz"),  # os.path.join(DATA_DIR, "00.RawData/{sid}/{sid}_R1.fastq.gz"),
         os.path.join(DATA_DIR, "{sid}_R2.fq.gz") # os.path.join(DATA_DIR, "00.RawData/{sid}/{sid}_R2.fastq.gz")
     output:
-        report=os.path.join(RESULTS_DIR, "{sid}_kraken.report"),
-        summary=os.path.join(RESULTS_DIR, "{sid}_kraken.out")
+        report=os.path.join(RESULTS_DIR, "kraken2/{sid}_kraken.report"),
+        summary=os.path.join(RESULTS_DIR, "kraken2/{sid}_kraken.out")
     conda:
         os.path.join(ENV_DIR, "kraken2.yaml")
     threads:
@@ -51,8 +51,8 @@ rule kraken2:
 # Running Struo2 database
 use rule kraken2 as struo2_kraken2 with:
     output:
-        report=os.path.join(RESULTS_DIR, "struo2_{sid}_kraken.report"),
-        summary=os.path.join(RESULTS_DIR, "struo2_{sid}_kraken.out")
+        report=os.path.join(RESULTS_DIR, "kraken2/struo2_{sid}_kraken.report"),
+        summary=os.path.join(RESULTS_DIR, "kraken2/struo2_{sid}_kraken.out")
     threads:
         config['struo2_kraken2']['threads']
     params:
@@ -160,8 +160,8 @@ rule phyloseq_input_kraken2_sample:
     input:
         rules.kraken2.output.report
     output:
-        biom=temp(os.path.join(RESULTS_DIR, "{sid}.report.biom")),
-        tsv=os.path.join(RESULTS_DIR, "{sid}.report.tsv")
+        biom=temp(os.path.join(RESULTS_DIR, "{kraken2/sid}.report.biom")),
+        tsv=os.path.join(RESULTS_DIR, "kraken2/{sid}.report.tsv")
     wildcard_constraints:
         sid="|".join(SAMPLES),
     conda:
@@ -180,8 +180,8 @@ rule phyloseq_input_struo2_kraken2:
     input:
         rules.struo2_kraken2.output.report
     output:
-        biom=temp(os.path.join(RESULTS_DIR, "{sid}.struo2_report.biom")),
-        tsv=os.path.join(RESULTS_DIR, "{sid}.struo2_report.tsv")
+        biom=temp(os.path.join(RESULTS_DIR, "kraken2/{sid}.struo2_report.biom")),
+        tsv=os.path.join(RESULTS_DIR, "kraken2/{sid}.struo2_report.tsv")
     wildcard_constraints:
         sid="|".join(SAMPLES),
     conda:
@@ -200,10 +200,10 @@ rule phyloseq_input_struo2_kraken2:
 # Merging all samples together into one table
 rule phyloseq_input_kraken2:
     input:
-        expand(os.path.join(RESULTS_DIR, "{sid}.report.tsv"), sid=SAMPLES)
+        expand(os.path.join(RESULTS_DIR, "kraken2/{sid}.report.tsv"), sid=SAMPLES)
     output:
-        abund=os.path.join(RESULTS_DIR, "phyloseq.kraken_abundance.tsv"),
-        tax=os.path.join(RESULTS_DIR, "phyloseq.kraken_taxonomy.tsv")
+        abund=os.path.join(RESULTS_DIR, "kraken2/phyloseq.kraken_abundance.tsv"),
+        tax=os.path.join(RESULTS_DIR, "kraken2/phyloseq.kraken_taxonomy.tsv")
     # wildcard_constraints:
     #     db="|".join(config["kraken2"]["db"].keys())
     message:
@@ -251,10 +251,10 @@ rule phyloseq_input_kraken2:
 # Phyloseq input from Struo2 report files
 rule phyloseq_input_struo2_kraken2_sample:
     input:
-        expand(os.path.join(RESULTS_DIR, "{sid}.struo2_report.tsv"), sid=SAMPLES)
+        expand(os.path.join(RESULTS_DIR, "kraken2/{sid}.struo2_report.tsv"), sid=SAMPLES)
     output:
-        abund=os.path.join(RESULTS_DIR, "phyloseq.struo2_kraken_abundance.tsv"),
-        tax=os.path.join(RESULTS_DIR, "phyloseq.struo2_kraken_taxonomy.tsv")
+        abund=os.path.join(RESULTS_DIR, "kraken2/phyloseq.struo2_kraken_abundance.tsv"),
+        tax=os.path.join(RESULTS_DIR, "kraken2/phyloseq.struo2_kraken_taxonomy.tsv")
     message:
         "Phyloseq input for Struo2_Kraken2"
     run:
