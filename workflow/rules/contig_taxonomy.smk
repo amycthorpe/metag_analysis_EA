@@ -123,6 +123,8 @@ rule contig_mpa_report:
         os.path.join(ENV_DIR, "bracken_new.yaml")
     log:
         os.path.join(RESULTS_DIR, "logs/contig/mpa_{sid}.log")
+    wildcard_constraints:
+        sid="|".join(SAMPLES)
     message:
         "Creating mpa-style report for {wildcards.sid}"
     shell:

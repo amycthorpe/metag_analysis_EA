@@ -95,6 +95,8 @@ rule remove_uncultured:
         edited=os.path.join(RESULTS_DIR, "bracken/{sid}_edited.bracken")
     log:
         os.path.join(RESULTS_DIR, "logs/edited_bracken_{sid}")
+    wildcard_constraints:
+        sid="|".join(SAMPLES)
     message:
         "Removing 'uncultured' taxa from bracken output from {wildcards.sid} due to combining issues"
     shell:
@@ -128,6 +130,8 @@ rule mpa_report:
         os.path.join(ENV_DIR, "bracken_new.yaml")
     log:
         os.path.join(RESULTS_DIR, "logs/mpa_{sid}.log")
+    wildcard_constraints:
+        sid="|".join(SAMPLES)
     message:
         "Creating mpa-style report for {wildcards.sid}"
     shell:
@@ -160,10 +164,8 @@ rule phyloseq_input_kraken2_sample:
     input:
         rules.kraken2.output.report
     output:
-        biom=temp(os.path.join(RESULTS_DIR, "{kraken2/sid}.report.biom")),
+        biom=temp(os.path.join(RESULTS_DIR, "kraken2/{sid}.report.biom")),
         tsv=os.path.join(RESULTS_DIR, "kraken2/{sid}.report.tsv")
-    wildcard_constraints:
-        sid="|".join(SAMPLES),
     conda:
         os.path.join(ENV_DIR, "biom.yaml")
     message:
@@ -208,6 +210,8 @@ rule phyloseq_input_kraken2:
     #     db="|".join(config["kraken2"]["db"].keys())
     message:
         "Phyloseq input for Kraken2"
+    wildcard_constraints:
+        sid="|".join(SAMPLES)
     run:
         import os
         import re

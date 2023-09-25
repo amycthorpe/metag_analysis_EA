@@ -2,7 +2,7 @@
 # STEPS
 
 # Steps to be done
-steps: ["taxonomy", "assembly", "contig_taxonomy", "coassembly", "annotation"]
+steps: ["taxonomy", "assembly", "contig_taxonomy", "annotation"] # coassembly
 
 
 ############################################################
@@ -53,8 +53,8 @@ clumpify:
   threads: 64
   dupedist: 12000
   groups: 50
-  memory: "2000g"
+  memory: "1600g"
 
 # ANNOTATION
 prodigal:
-  threads: 4
+  threads: 6
