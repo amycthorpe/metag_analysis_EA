@@ -2,9 +2,9 @@
 Author: Susheel Bhanu BUSI
 Affiliation: Molecular Ecology group, UKCEH
 Date: [2023-09-23]
-Run: snakemake -s workflow/rules/assembly.smk --use-conda --cores 4 -rp
+Run: snakemake -s workflow/rules/annotation.smk --use-conda --cores 4 -rp
 Latest modification:
-Purpose: To run MEGAHIT assembly on reads
+Purpose: To run gene calling via PRODIGAL on contigs
 """
 
 

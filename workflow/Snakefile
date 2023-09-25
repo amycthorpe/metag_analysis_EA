@@ -75,6 +75,15 @@ if "annotation" in STEPS:
         "status/annotation.done"
     ]
 
+# Eukaryotes
+if "eukaryotes" in STEPS:
+    include:
+        "rules/eukaryotes.smk"
+    TARGETS += [
+        "status/eukaryotes.done"
+    ]
+
+
 # No targets
 if len(TARGETS) == 0:
     raise Exception('You are not serious. Nothing to be done? Really?')

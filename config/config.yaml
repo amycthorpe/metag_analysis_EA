@@ -2,7 +2,7 @@
 # STEPS
 
 # Steps to be done
-steps: ["taxonomy", "assembly", "contig_taxonomy", "annotation"] # coassembly
+steps: ["taxonomy", "assembly", "contig_taxonomy", "annotation", "eukaryotes"] #TODO: "coassembly"
 
 
 ############################################################
@@ -58,3 +58,8 @@ clumpify:
 # ANNOTATION
 prodigal:
   threads: 6
+
+# Eukaryotes
+eukulele:
+  threads: 64
+  db: "phylodb"
