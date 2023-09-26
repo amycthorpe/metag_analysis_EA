@@ -23,8 +23,8 @@ rule kaiju:
 ############################################
 # Preparing the files for KAIJU classification
 rule kaiju_classify:
-    input:
-        FASTA=",".join([os.path.join(RESULTS_DIR, f"assembly/{sid}/{sid}.fasta") for sid in SAMPLES]) # FASTA=os.path.join(RESULTS_DIR, "assembly/{sid}/{sid}.fasta")
+#    input:
+#        FASTA=",".join([os.path.join(RESULTS_DIR, f"assembly/{sid}/{sid}.fasta") for sid in SAMPLES]) # FASTA=os.path.join(RESULTS_DIR, "assembly/{sid}/{sid}.fasta")
     output:
         out=os.path.join(RESULTS_DIR, "kaiju/kaiju_out.txt"),
         names=os.path.join(RESULTS_DIR, "kaiju/kaiju_names.txt")
@@ -35,6 +35,7 @@ rule kaiju_classify:
     log:
         os.path.join(RESULTS_DIR, "logs/kaiju.log")
     params:
+        FASTA=",".join([os.path.join(RESULTS_DIR, f"assembly/{sid}/{sid}.fasta") for sid in SAMPLES]),
         fmi=config["kaiju"]["fmi"],
         nodes=config["kaiju"]["nodes"],
         names=config["kaiju"]["names"],
@@ -42,6 +43,6 @@ rule kaiju_classify:
         "Running KAIJU against the nr_protein database"
     shell:
         "(date && "
-        "kaiju-multi -v -z {threads} -t {params.nodes} -f {params.fmi} -i {input} > {output.out} && "
+        "kaiju-multi -v -z {threads} -t {params.nodes} -f {params.fmi} -i {params.FASTA} > {output.out} && "
         "kaiju-addTaxonNames -t {params.nodes}  -n {params.names} -i {output.out} -o {output.names} && "
         "date) &> >(tee {log})"
