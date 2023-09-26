@@ -11,7 +11,7 @@ Purpose: To classify eukaryotes from contigs using KAIJU
 ############################################
 rule kaiju:
     input:
-        os.path.join(RESULTS_DIR, "eukulele_output")
+        os.path.join(RESULTS_DIR, "kaiju/kaiju_names.txt")
     output:
         touch("status/kaiju.done")
 
@@ -38,10 +38,10 @@ rule kaiju_classify:
         fmi=config["kaiju"]["fmi"],
         nodes=config["kaiju"]["nodes"],
         names=config["kaiju"]["names"],
-        ref_dir=config["kaiju"]["ref_dir"]
     message:
         "Running KAIJU against the nr_protein database"
     shell:
-        "(date && EUKulele all -m mets --sample_dir {input} --out_dir {output[0]} --database {params.db} --scratch {params.scratch} --CPUs {threads} --alignment_choice {params.aligner} --reference_dir {params.ref_dir} && "
+        "(date && "
+        "kaiju-multi -v -z {threads} -t {params.nodes} -f {params.fmi} -i {input} > {output.out} && "
+        "kaiju-addTaxonNames -t {params.nodes}  -n {params.names} -i {output.out} -o {output.names} && "
         "date) &> >(tee {log})"
-

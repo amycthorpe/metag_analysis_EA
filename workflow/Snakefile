@@ -59,6 +59,14 @@ if "contig_taxonomy" in STEPS:
         "status/contig_taxonomy.done"
     ]
 
+# Kaiju
+if "kaiju" in STEPS:
+    include:
+        "rules/kaiju.smk"
+    TARGETS += [
+        "status/kaiju.done"
+    ]
+
 # Co-Assembly
 if "coassembly" in STEPS:
     include:

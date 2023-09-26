@@ -2,7 +2,7 @@
 # STEPS
 
 # Steps to be done
-steps: ["taxonomy", "assembly", "contig_taxonomy", "annotation", "eukaryotes"] #TODO: "coassembly"
+steps: ["taxonomy", "assembly", "contig_taxonomy", "annotation", "eukaryotes", "kaiju"] #TODO: "coassembly"
 
 
 ############################################################
@@ -24,6 +24,7 @@ src_dir: "/ssd0/susbus/socd/metag_analyses/scripts"
   
 ############################################################
 # TOOLS 
+# CLASSIFICATION
 kraken2:
   db: "/hdd0/susbus/databases/kraken2/pluspfp/"
   confidence: 0.5
@@ -32,6 +33,13 @@ kraken2:
   read: 150
   level: "S" # https://github.com/jenniferlu717/Bracken/issues/117
   contig_level: "P" # set to phylum since many samples were unclassified at the Species, Genus, Family and Order levels
+
+# KAIJU
+kaiju:
+  threads: 48
+  fmi: "/raid3/scratch/MEGshared/MG_packages/kaiju/src/kaijudb/kaiju_db_nr.fmi"
+  nodes: "/raid3/scratch/MEGshared/MG_packages/kaiju/src/kaijudb/nodes.dmp"
+  names: "/raid3/scratch/MEGshared/MG_packages/kaiju/src/kaijudb/names.dmp"
 
 # Struo2 database from the Ruth Ley lab
 struo2_kraken2:
