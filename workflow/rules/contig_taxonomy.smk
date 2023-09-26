@@ -35,7 +35,7 @@ rule contig_kraken2:
         config['kraken2']['threads']
     params:
         db=config['kraken2']['db'],
-        confidence=config['kraken2']['confidence']
+        confidence=config['kraken2']['contig_confidence']
     log:
         os.path.join(RESULTS_DIR, "logs/contig/kraken2.{sid}.log")
     message:
@@ -74,7 +74,7 @@ rule contig_bracken:
     params:
         db=config['kraken2']['db'],
         read=config['kraken2']['read'],
-        level=config['kraken2']['level'],
+        level=config['kraken2']['contig_level'],
         bracken=config['bracken']['bin']
     log:
         os.path.join(RESULTS_DIR, "logs/contig/bracken.{sid}.log")

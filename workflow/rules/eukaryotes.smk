@@ -47,7 +47,7 @@ rule eukulele:
     log:
         os.path.join(RESULTS_DIR, "logs/eukulele.log")
     message:
-        "Running EUKULELE on {wildcards.sid}"
+        "Running EUKULELE"
     shell:
         "(date && EUKulele --sample_dir $(dirname {input}) -o {output[0]} -m mets --database {config[eukulele][db]} && date) &> >(tee {log})"
 
