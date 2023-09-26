@@ -4,7 +4,9 @@
 Repository containing [Snakemake](https://snakemake.readthedocs.io/en/stable/) workflow for 
 - running [Kraken2](https://ccb.jhu.edu/software/kraken/) taxonomy on preprocessed reads
 - assembly with [Megahit](https://github.com/voutcn/megahit)
-
+- gene calls with [Prodigal](https://github.com/hyattpd/Prodigal)
+- eukaryote classification with [EUKulele](https://github.com/AlexanderLabWHOI/EUKulele)
+ 
 # Setup
 
 ## Databases
