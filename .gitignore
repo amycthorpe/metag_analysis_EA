@@ -140,3 +140,10 @@ status
 # Files
 *_orig*
 *.done
+*free.csv*
+*path_test.txt
+phylodb
+phylodb**
+*reference_bins*
+reference_bins/**
+phylodb/**
