@@ -31,7 +31,7 @@ kraken2:
   threads: 12
   read: 150
   level: "S" # https://github.com/jenniferlu717/Bracken/issues/117
-  contig_level: "G"
+  contig_level: "P" # set to phylum since many samples were unclassified at the Species, Genus, Family and Order levels
 
 # Struo2 database from the Ruth Ley lab
 struo2_kraken2:
