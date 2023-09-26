@@ -65,3 +65,4 @@ prodigal:
 eukulele:
   threads: 64
   db: "phylodb"
+  scratch: "/hdd0/susbus/socd/results/eukulele_scratch"
