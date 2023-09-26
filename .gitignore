@@ -145,5 +145,6 @@ status
 phylodb
 phylodb**
 *reference_bins*
-reference_bins/**
+*reference_bins/**
 phylodb/**
+reference_bins/*

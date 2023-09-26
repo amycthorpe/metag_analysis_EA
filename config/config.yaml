@@ -65,4 +65,6 @@ prodigal:
 eukulele:
   threads: 64
   db: "phylodb"
+  aligner: "diamond"  # options: "blast" or "diamond"
   scratch: "/hdd0/susbus/socd/results/eukulele_scratch"
+  ref_dir: "/hdd0/susbus/databases"

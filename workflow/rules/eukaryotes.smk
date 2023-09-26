@@ -46,9 +46,14 @@ rule eukulele:
         config["eukulele"]["threads"]
     log:
         os.path.join(RESULTS_DIR, "logs/eukulele.log")
+    params:
+        db=config["eukulele"]["db"],
+        scratch=config["eukulele"]["scratch"],
+        aligner=config["eukulele"]["aligner"],
+        ref_dir=config["eukulele"]["ref_dir"]
     message:
         "Running EUKULELE"
     shell:
-        "(date && EUKulele all -m mets --sample_dir {input} --out_dir {output[0]} --database {config[eukulele][db]} --scratch {config[eukulele][scratch]} --CPUs {threads} --alignment_choice diamond && "
+        "(date && EUKulele all -m mets --sample_dir {input} --out_dir {output[0]} --database {params.db} --scratch {params.scratch} --CPUs {threads} --alignment_choice {params.aligner} --reference_dir {params.ref_dir} && "
         "date) &> >(tee {log})"
 
