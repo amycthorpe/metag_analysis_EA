@@ -1,0 +1,1 @@
+/hdd0/susbus/tools/conda_env/6361a8c35b2fd5049fb8a309ca9bc4f4_/bin:/home/susbus/tools/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/ncbi-blast-2.13.0+/bin:/usr/local/go/bin

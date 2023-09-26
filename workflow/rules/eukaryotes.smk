@@ -37,7 +37,7 @@ rule file_prep:
 
 rule eukulele:
     input:
-        expand(os.path.join(RESULTS_DIR, "eukulele_input/{sid}.faa"), sid=SAMPLES)
+        os.path.join(RESULTS_DIR, "eukulele_input")
     output:
         directory(os.path.join(RESULTS_DIR, "eukulele_output"))
     conda:
@@ -49,5 +49,5 @@ rule eukulele:
     message:
         "Running EUKULELE"
     shell:
-        "(date && EUKulele all --sample_dir $(dirname {input}) -o {output[0]} -m mets --database {config[eukulele][db]} && date) &> >(tee {log})"
+        "(date && EUKulele all -m mets --sample_dir {input} --out_dir {output[0]} --database {config[eukulele][db]} && date) &> >(tee {log})"
 
