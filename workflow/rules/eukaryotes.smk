@@ -49,5 +49,5 @@ rule eukulele:
     message:
         "Running EUKULELE"
     shell:
-        "(date && EUKulele --sample_dir $(dirname {input}) -o {output[0]} -m mets --database {config[eukulele][db]} && date) &> >(tee {log})"
+        "(date && EUKulele all --sample_dir $(dirname {input}) -o {output[0]} -m mets --database {config[eukulele][db]} && date) &> >(tee {log})"
 
