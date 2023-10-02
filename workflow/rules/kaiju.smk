@@ -43,7 +43,7 @@ rule kaiju_classify:
         "Running KAIJU against the nr_protein database"
     shell:
         "(date && "
-        "kaiju -v -z {threads} -t {params.nodes} -f {params.fmi} -i {params.FASTA} -o {output.out} && "
+        "kaiju -v -z {threads} -t {params.nodes} -f {params.fmi} -i {input.FASTA} -o {output.out} && "
         "kaiju-addTaxonNames -t {params.nodes}  -n {params.names} -i {output.out} -o {output.names} && "
         "date) &> >(tee {log})"
 
