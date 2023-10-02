@@ -11,7 +11,8 @@ Purpose: To classify eukaryotes from contigs using KAIJU
 ############################################
 rule kaiju:
     input:
-        os.path.join(RESULTS_DIR, "kaiju/kaiju_names.txt")
+        os.path.join(RESULTS_DIR, "kaiju/kaiju_names.txt"),
+        os.path.join(RESULTS_DIR, "kaiju/kaiju_summary.tsv")
     output:
         touch("status/kaiju.done")
 
@@ -38,11 +39,28 @@ rule kaiju_classify:
         FASTA=",".join([os.path.join(RESULTS_DIR, f"assembly/{sid}/{sid}.fasta") for sid in SAMPLES]),
         fmi=config["kaiju"]["fmi"],
         nodes=config["kaiju"]["nodes"],
-        names=config["kaiju"]["names"],
+        names=config["kaiju"]["names"]
     message:
         "Running KAIJU against the nr_protein database"
     shell:
         "(date && "
         "kaiju-multi -v -z {threads} -t {params.nodes} -f {params.fmi} -i {params.FASTA} > {output.out} && "
         "kaiju-addTaxonNames -t {params.nodes}  -n {params.names} -i {output.out} -o {output.names} && "
+        "date) &> >(tee {log})"
+
+rule kaiju_table:
+    input:
+        os.path.join(RESULTS_DIR, "kaiju/kaiju_out.txt")
+    output:
+        os.path.join(RESULTS_DIR, "kaiju/kaiju_summary.tsv")
+    log:
+        os.path.join(RESULTS_DIR, "logs/kaiju/summary.log")
+    params:
+        nodes=config["kaiju"]["nodes"],
+        names=config["kaiju"]["names"]
+    message:
+        "Converting kaiju output to table"
+    shell:
+        "(date && "
+        "kaiju2table -t {params.nodes} -n {params.names} -o {output} {input} -l superkingdom,phylum,class,order,family,genus,species && "
         "date) &> >(tee {log})"
