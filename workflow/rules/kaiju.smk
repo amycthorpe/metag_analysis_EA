@@ -53,6 +53,8 @@ rule kaiju_table:
         os.path.join(RESULTS_DIR, "kaiju/kaiju_out.txt")
     output:
         os.path.join(RESULTS_DIR, "kaiju/kaiju_summary.tsv")
+    conda:
+        os.path.join(ENV_DIR, "kaiju.yaml")
     log:
         os.path.join(RESULTS_DIR, "logs/kaiju/summary.log")
     params:
@@ -62,5 +64,5 @@ rule kaiju_table:
         "Converting kaiju output to table"
     shell:
         "(date && "
-        "kaiju2table -t {params.nodes} -n {params.names} -o {output} {input} -l superkingdom,phylum,class,order,family,genus,species && "
+        "kaiju2table -t {params.nodes} -n {params.names} -r {config[kaiju][level]} -o {output} {input} -l superkingdom,phylum,class,order,family,genus,species && "
         "date) &> >(tee {log})"

@@ -37,6 +37,7 @@ kraken2:
 # KAIJU
 kaiju:
   threads: 48
+  level: "species"
   fmi: "/raid3/scratch/MEGshared/MG_packages/kaiju/src/kaijudb/kaiju_db_nr.fmi"
   nodes: "/raid3/scratch/MEGshared/MG_packages/kaiju/src/kaijudb/nodes.dmp"
   names: "/raid3/scratch/MEGshared/MG_packages/kaiju/src/kaijudb/names.dmp"
