@@ -2,7 +2,7 @@
 # STEPS
 
 # Steps to be done
-steps: ["taxonomy", "assembly", "contig_taxonomy", "annotation", "kaiju"] #TODO: "eukaryotes", "coassembly"
+steps: ["taxonomy", "assembly", "contig_taxonomy", "annotation", "kaiju", "eukaryotes"] #TODO: "eukaryotes", "coassembly"
 
 
 ############################################################
@@ -38,9 +38,9 @@ kraken2:
 kaiju:
   threads: 4
   level: "species"
-  fmi: "/raid3/scratch/MEGshared/MG_packages/kaiju/src/kaijudb/kaiju_db_nr.fmi"
-  nodes: "/raid3/scratch/MEGshared/MG_packages/kaiju/src/kaijudb/nodes.dmp"
-  names: "/raid3/scratch/MEGshared/MG_packages/kaiju/src/kaijudb/names.dmp"
+  fmi: "/hdd0/susbus/databases/kaiju/kaiju_db_nr_euk.fmi"
+  nodes: "/hdd0/susbus/databases/kaiju/nodes.dmp"
+  names: "/hdd0/susbus/databases/kaiju/names.dmp"
 
 # Struo2 database from the Ruth Ley lab
 struo2_kraken2:
