@@ -77,3 +77,14 @@ eukulele:
   aligner: "diamond"  # options: "blast" or "diamond"
   scratch: "/hdd0/susbus/socd/results/eukulele_scratch"
   ref_dir: "/hdd0/susbus/databases"
+
+# MAPPING
+bwa:
+  threads: 10
+  map_threads:16
+
+# http://www.htslib.org/doc/samtools.html
+samtools:
+  sort:
+  chunk_size: "4G"
+  chunk_size_bigmem: "16G"  
