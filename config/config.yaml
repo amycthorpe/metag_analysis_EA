@@ -2,7 +2,7 @@
 # STEPS
 
 # Steps to be done
-steps: ["taxonomy", "assembly", "contig_taxonomy", "annotation", "kaiju", "eukaryotes"] #TODO: "eukaryotes", "coassembly"
+steps: ["taxonomy", "assembly", "contig_taxonomy", "annotation", "kaiju"] #TODO: "eukaryotes", "coassembly"
 
 
 ############################################################
@@ -68,7 +68,7 @@ clumpify:
 
 # ANNOTATION
 prodigal:
-  threads: 6
+  threads: 8
 
 # Eukaryotes
 eukulele:

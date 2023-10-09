@@ -11,7 +11,7 @@ Purpose: To run gene calling via PRODIGAL on contigs
 ############################################
 rule annotation:
     input:
-        expand(os.path.join(RESULTS_DIR, "prodigal/{sid}/{sid}.faa"), sid=SAMPLES)
+        expand(os.path.join(RESULTS_DIR, "prodigal/{sid}/{sid}.{filetype}"), sid=SAMPLES, filetype=["faa", "gff"])
     output:
         touch("status/annotation.done")
 
@@ -26,7 +26,8 @@ rule prodigal:
     input:
         FASTA=os.path.join(RESULTS_DIR, "assembly/{sid}/{sid}.fasta")
     output:
-        FAA=os.path.join(RESULTS_DIR, "prodigal/{sid}/{sid}.faa")
+        FAA=os.path.join(RESULTS_DIR, "prodigal/{sid}/{sid}.faa"),
+        GFF=os.path.join(RESULTS_DIR, "prodigal/{sid}/{sid}.gff")
     conda:
         os.path.join(ENV_DIR, "prodigal.yaml")
     threads:
@@ -36,5 +37,5 @@ rule prodigal:
     message:
         "Running PRODIGAL on {wildcards.sid}"
     shell:
-        "(date && prodigal -a {output.FAA} -p meta -i {input.FASTA} -f gff && date) &> >(tee {log})"
+        "(date && prodigal -a {output.FAA} -p meta -i {input.FASTA} -f gff -o {output.GFF} && date) &> >(tee {log})"
 
