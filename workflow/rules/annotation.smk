@@ -36,5 +36,5 @@ rule prodigal:
     message:
         "Running PRODIGAL on {wildcards.sid}"
     shell:
-        "(date && prodigal -a {output.FAA} -p meta -i {input.FASTA} && date) &> >(tee {log})"
+        "(date && prodigal -a {output.FAA} -p meta -i {input.FASTA} -f gff && date) &> >(tee {log})"
 
