@@ -123,13 +123,13 @@ rule gene_depth:
         os.path.join(RESULTS_DIR, "logs/gene_depth.{sid}.log")
     params:
         tmp=os.path.join(RESULTS_DIR, "coverage/{sid}/tmp"),
-        avg_calc=os.path.join(SRC_DIR, "calcAvgCoverage.pl"}
-    messsage:
+        avg_calc=os.path.join(SRC_DIR, "calcAvgCoverage.pl")
+    message:
         "Estimating gene length and depth for {wildcards.sid}"
     shell:
         """
-        TMP_FILE=$(mktemp --tmpdir={params.tmp -t "annotation_cov_XXXXXX.bed")
-        sortBed -g {input.length} -i  {input.asm} | awk '$4 < $5' | coverageBed -hist -sorted -g {input.length} -b {input.BAM} -a "stdin" | grep -v "^all" > $TMP_FILE
+        TMP_FILE=$(mktemp --tmpdir={params.tmp} -t "annotation_cov_XXXXXX.bed")
+        sortBed -g {input.length} -i {input.asm} | awk '$4 < $5' | coverageBed -hist -sorted -g {input.length} -b {input.BAM} -a "stdin" | grep -v "^all" > $TMP_FILE
 
         paste <(cat $TMP_FILE | cut -f9 | cut -f1 -d \";\" | sed -e \"s/ID=//g\") \
          <(cut -f10,11,12,13 $TMP_FILE) > {output.hist}
