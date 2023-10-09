@@ -91,6 +91,14 @@ if "eukaryotes" in STEPS:
         "status/eukaryotes.done"
     ]
 
+# Coverage
+if "coverage" in STEPS:
+    include:
+        "rules/coverage.smk"
+    TARGETS += [
+        "status/coverage.done"
+    ]
+
 
 # No targets
 if len(TARGETS) == 0:
