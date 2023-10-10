@@ -110,7 +110,7 @@ rule contig_length:
 
 rule gene_depth:
     input:
-        asm=os.path.join(RESULTS_DIR, "assembly/{sid}/{sid}.fasta"),
+        asm=os.path.join(RESULTS_DIR, "prodigal/{sid}/{sid}.gff"),
         BAM=os.path.join(RESULTS_DIR, "bam/{sid}/{sid}.sorted.bam"),
         length=rules.contig_length.output.length
     output:
@@ -129,7 +129,7 @@ rule gene_depth:
     shell:
         """
         TMP_FILE=$(mktemp --tmpdir={params.tmp} -t "annotation_cov_XXXXXX.bed")
-        sortBed -g {input.length} -i {input.asm} | awk '$4 < $5' | coverageBed -hist -sorted -g {input.length} -b {input.BAM} -a "stdin" | grep -v "^all" > $TMP_FILE
+        sortBed -g {input.length} -i {input.gff} | awk '$4 < $5' | coverageBed -hist -sorted -g {input.length} -b {input.BAM} -a "stdin" | grep -v "^all" > $TMP_FILE
 
         paste <(cat $TMP_FILE | cut -f9 | cut -f1 -d \";\" | sed -e \"s/ID=//g\") \
          <(cut -f10,11,12,13 $TMP_FILE) > {output.hist}

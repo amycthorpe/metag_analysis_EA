@@ -4,3 +4,4 @@ channels:
 dependencies:
  - perl=5.32.1
  - bedtools=2.31.0
+ - perl-bioperl=1.7.8
