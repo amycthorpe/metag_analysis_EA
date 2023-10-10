@@ -110,7 +110,7 @@ rule contig_length:
 
 rule gene_depth:
     input:
-        asm=os.path.join(RESULTS_DIR, "prodigal/{sid}/{sid}.gff"),
+        gff=os.path.join(RESULTS_DIR, "prodigal/{sid}/{sid}.gff"),
         BAM=os.path.join(RESULTS_DIR, "bam/{sid}/{sid}.sorted.bam"),
         length=rules.contig_length.output.length
     output:
