@@ -12,7 +12,8 @@ Purpose: To estimate contig and gene coverage
 rule coverage:
     input:
         expand(os.path.join(RESULTS_DIR, "coverage/{sid}/{sid}_depth.txt"), sid=SAMPLES),
-        expand(os.path.join(RESULTS_DIR, "coverage/{sid}/{sid}.gene.len"), sid=SAMPLES)
+        expand(os.path.join(RESULTS_DIR, "coverage/{sid}/{sid}.gene.len"), sid=SAMPLES),
+        expand(os.path.join(RESULTS_DIR, "coverage/{sid}/{sid}_gene_coverage.txt"), sid=SAMPLES)
     output:
         touch("status/coverage.done")
 
@@ -23,7 +24,7 @@ BWA_IDX_EXT = ["amb", "ann", "bwt", "pac", "sa"]
 
 
 ############################################
-localrules: gene_depth, contig_length
+localrules: gene_depth, contig_length, contig_gene_link
 
 
 ############################################
@@ -142,3 +143,18 @@ rule gene_depth:
         cut -f 1,4 {output.hist} | uniq > {output.len}
         """   
 
+rule contig_gene_link:
+    input:
+        faa=os.path.join(RESULTS_DIR, "prodigal/{sid}/{sid}.faa"),
+        average=rules.gene_depth.output.average
+    output:
+        txt=os.path.join(RESULTS_DIR, "coverage/{sid}/{sid}_gene_contig.txt"),
+        gene_cov=os.path.join(RESULTS_DIR, "coverage/{sid}/{sid}_gene_coverage.txt")
+    log:
+        os.path.join(RESULTS_DIR, "gene_contig_{sid}.log")
+    message:
+        "Linking genes to contig IDs from FAA: {wildcards.sid}"
+    shell:
+        "(date && grep '>' {input.faa} | cut -f1,9 -d ' ' | sed 's/>//g' | cut -f1 -d ';' | sed -e 's/ID=//g' > {output.txt} && "
+        "join -1 2 -2 1 <(sort -k2,2 {output.txt}) <(sort -k1,1 {input.average}) > {output.gene_cov} && " 
+        "date) &> {log}"
