@@ -113,6 +113,9 @@ rule euk_abundances:
     message:
         "Merging all eukaryote abundances for all samples"
     run:
+        # dependencies
+        from functools import reduce
+
         # Collecting all files in folder 
         directory=os.path.dirname(input[0])
         os.chdir(directory)
@@ -188,6 +191,9 @@ rule euk_abundances_all:
     message:
         "Merging all taxa abundances"
     run:
+        # dependencies
+        from functools import reduce
+
         # Collecting all files in folder
         directory=os.path.dirname(input[0])
         os.chdir(directory)
