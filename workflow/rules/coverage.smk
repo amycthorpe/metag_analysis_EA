@@ -151,7 +151,7 @@ rule contig_gene_link:
         txt=os.path.join(RESULTS_DIR, "coverage/{sid}/{sid}_gene_contig.txt"),
         gene_cov=os.path.join(RESULTS_DIR, "coverage/{sid}/{sid}_gene_coverage.txt")
     log:
-        os.path.join(RESULTS_DIR, "gene_contig_{sid}.log")
+        os.path.join(RESULTS_DIR, "logs/gene_contig_{sid}.log")
     message:
         "Linking genes to contig IDs from FAA: {wildcards.sid}"
     shell:
