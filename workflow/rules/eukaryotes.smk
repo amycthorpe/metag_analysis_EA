@@ -36,7 +36,6 @@ rule file_prep:
     shell:
         "(date && ln -vs {input} {output} && date) &> >(tee {log})"
 
-
 rule eukulele:
     input:
         os.path.join(RESULTS_DIR, "eukulele_input")
@@ -59,6 +58,7 @@ rule eukulele:
         "(date && EUKulele all -m mets --sample_dir {input} --out_dir {output[0]} --database {params.db} --scratch {params.scratch} --CPUs {threads} --alignment_choice {params.aligner} --reference_dir {params.ref_dir} && "
         "date) &> >(tee {log})"
 
+# Merging EUKulele output with coverage (genes and contigs)
 rule merge_cov:
     input:
         cov=os.path.join(RESULTS_DIR, "coverage/{sid}/{sid}_gene_coverage.txt")
@@ -77,7 +77,7 @@ rule merge_cov:
         cov.columns=['gene_id', 'transcript_name', 'coverage']
 
         # merging taxonomy with coverage
-        merged=filt_euks.merge(cov, how="left", on="transcript_name")
+        merged=tax.merge(cov, how="left", on="transcript_name")
         filt_merged=merged[['full_classification','classification', 'coverage']]
 
         # Grouping same taxonomy and getting sum of coverage
@@ -89,8 +89,10 @@ rule merge_cov:
         # Eukaryotes
         # keeping only rows that contain 'Eukary' in the 'full_classification' column
         euks=tax[tax['full_classification'].str.contains("Eukary", na=False)].drop(['counts'], axis=1)
+        
         # keeping only rows that have at least 50% 'max_pid'
         filt_euks=euks.query("max_pid >=50")
+        
         # merging taxonomy with coverage
         merged_euks=filt_euks.merge(cov, how="left", on="transcript_name")
         filt_merged_euk=merged_euks[['full_classification','classification', 'coverage']]
@@ -100,7 +102,6 @@ rule merge_cov:
         
         # writing to file
         final_euks.to_csv(output.euk, index=None, sep="\t")
-
 
 rule euk_abundances:
     input:
@@ -136,7 +137,7 @@ rule euk_abundances:
         new_cols=list(map(lambda x: x.replace('_eukaryotes.txt',''),names))
         merged.columns=new_cols
 
-        # checking if any values are "NA"
+        # check to see if any values are "NA"
         merged.isnull().values.any()
         # if "NA" run the following
         merged.fillna('', inplace=True)
@@ -160,9 +161,9 @@ rule merge_cov_all:
     message:
         "Merging all EUKulele taxonomy with coverage for {wildcards.sid}"
     run:
-        tax=pd.read_csv(input.tax, header=0, sep="\t", index_col=0)
-        cov=pd.read_csv(input.cov, header=None, sep="\t")
-        cov.columns=['transcript_name', 'coverage']
+        tax=pd.read_csv(params.tax, header=0, sep="\t", index_col=0)
+        cov=pd.read_csv(input.cov, header=None, sep=" ")
+        cov.columns=['gene_id', 'transcript_name', 'coverage']
 
         # keeping only rows that contain 'Eukary' in the 'full_classification' column
         euks=tax.drop(['counts'], axis=1)
