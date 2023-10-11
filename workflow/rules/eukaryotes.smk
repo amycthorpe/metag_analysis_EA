@@ -11,7 +11,7 @@ Purpose: To classify eukaryotes from contigs
 ############################################
 rule eukaryotes:
     input:
-#        os.path.join(RESULTS_DIR, "eukulele_output"),
+        os.path.join(RESULTS_DIR, "eukulele_output"),
         os.path.join(RESULTS_DIR, "euk_tax_cov/merged_eukaryote_abundances.txt"),
         os.path.join(RESULTS_DIR, "euk_tax_cov/merged_eukulele_all_abundances.txt")
     output:
