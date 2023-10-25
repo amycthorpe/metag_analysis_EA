@@ -29,7 +29,7 @@ rule install_magiclamp:
         out=os.path.join(RESULTS_DIR, "logs/setup.magiclamp.log")
     params:
         script=os.path.join(SRC_DIR, "install_magiclamp.sh"), 
-        path=os.path.join(SUBMODULES, "magiclamp")
+        path=os.path.join(SUBMODULES, "MagicLamp")
     conda:
         os.path.join(ENV_DIR, "magiclamp.yaml")
     message:

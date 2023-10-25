@@ -36,7 +36,7 @@ chmod u+x Miniconda3-latest-Linux-x86_64.sh
 
 Getting the repository including sub-modules
 ```bash
-git clone git@github.com:UKCEH-MolecularEcology/metag_analyses.git
+git clone --recurse-submodules git@github.com:UKCEH-MolecularEcology/metag_analyses.git
 ```
 
 Create the main `snakemake` environment
