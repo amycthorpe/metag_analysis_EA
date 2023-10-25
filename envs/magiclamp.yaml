@@ -1,0 +1,85 @@
+channels:
+  - au-eoed
+  - conda-forge
+  - bioconda
+  - r
+  - defaults
+dependencies:
+  - r-ggplot2 
+  - r-stringi 
+  - r-reshape 
+  - r-reshape2 
+  - r-tidyverse 
+  - r-argparse 
+  - r-ggdendro 
+  - r-pvclust 
+  - r-gridgraphics
+  - r-gridbase
+  - r-gridextra
+  - r-ggpubr
+  - r-broom
+  - python=3.7 
+  - hmmer 
+  - diamond 
+  - prodigal 
+  - blast 
+  - metabat2
+  # - _libgcc_mutex=0.1=conda_forge
+  # - _openmp_mutex=4.5=1_gnu
+  # - blast=2.9.0=h20b68b9_1
+  # - boost=1.68.0=py37h8619c78_1001
+  # - boost-cpp=1.68.0=h11c811c_1000
+  # - bzip2=1.0.8=h7f98852_4
+  # - ca-certificates=2020.12.5=ha878542_0
+  # - certifi=2020.12.5=py37h89c1867_1
+  # - diamond=0.9.24=ha888412_1
+  # - gmp=6.2.1=h58526e2_0
+  # - gnutls=3.6.13=h79a8f9a_0
+  # - hmmer=3.3.2=he1b5a44_0
+  # - icu=58.2=hf484d3e_1000
+  # - ld_impl_linux-64=2.35.1=hea4e1c9_2
+  # - libblas=3.9.0=8_openblas
+  # - libcblas=3.9.0=8_openblas
+  # - libffi=3.3=h58526e2_2
+  # - libgcc-ng=9.3.0=h2828fa1_18
+  # - libgfortran-ng=9.3.0=hff62375_18
+  # - libgfortran5=9.3.0=hff62375_18
+  # - libgomp=9.3.0=h2828fa1_18
+  # - liblapack=3.9.0=8_openblas
+  # - libopenblas=0.3.12=pthreads_h4812303_1
+  # - libstdcxx-ng=9.3.0=h6de172a_18
+  # - ncurses=6.2=h58526e2_4
+  # - nettle=3.4.1=h1bed415_1002
+  # - numpy=1.20.1=py37haa41c4c_0
+  # - openssl=1.1.1j=h7f98852_0
+  # - pcre=8.44=he1b5a44_0
+  # - perl=5.26.2=h36c2ea0_1008
+  # - perl-archive-tar=2.32=pl526_0
+  # - perl-carp=1.38=pl526_3
+  # - perl-common-sense=3.74=pl526_2
+  # - perl-compress-raw-bzip2=2.087=pl526he1b5a44_0
+  # - perl-compress-raw-zlib=2.087=pl526hc9558a2_0
+  # - perl-exporter=5.72=pl526_1
+  # - perl-exporter-tiny=1.002001=pl526_0
+  # - perl-extutils-makemaker=7.36=pl526_1
+  # - perl-io-compress=2.087=pl526he1b5a44_0
+  # - perl-io-zlib=1.10=pl526_2
+  # - perl-json=4.02=pl526_0
+  # - perl-json-xs=2.34=pl526h6bb024c_3
+  # - perl-list-moreutils=0.428=pl526_1
+  # - perl-list-moreutils-xs=0.428=pl526_0
+  # - perl-pathtools=3.75=pl526h14c3975_1
+  # - perl-scalar-list-utils=1.52=pl526h516909a_0
+  # - perl-types-serialiser=1.0=pl526_2
+  # - perl-xsloader=0.24=pl526_0
+  # - pip=21.0.1=pyhd8ed1ab_0
+  # - prodigal=2.6.3=h516909a_2
+  # - python=3.7.10=hffdb5ce_100_cpython
+  # - python_abi=3.7=1_cp37m
+  # - readline=8.0=he28a2e2_2
+  # - setuptools=49.6.0=py37h89c1867_3
+  # - sqlite=3.34.0=h74cdb3f_0
+  # - tk=8.6.10=h21135ba_1
+  # - wheel=0.36.2=pyhd3deb0d_0
+  # - xz=5.2.5=h516909a_1
+  # - zlib=1.2.11=h516909a_1010

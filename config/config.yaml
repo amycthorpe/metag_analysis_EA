@@ -2,7 +2,7 @@
 # STEPS
 
 # Steps to be done
-steps: ["taxonomy", "assembly", "contig_taxonomy", "annotation", "kaiju", "coverage"] #TODO: "eukaryotes", "coassembly"
+steps: ["taxonomy", "assembly", "contig_taxonomy", "annotation", "kaiju", "coverage", "functions"] #TODO: "eukaryotes", "coassembly"
 
 
 ############################################################
@@ -21,7 +21,8 @@ env_dir: "/ssd0/susbus/socd/metag_analyses/envs"
 
 # Directory with scripts
 src_dir: "/ssd0/susbus/socd/metag_analyses/scripts"
-  
+
+
 ############################################################
 # TOOLS 
 # CLASSIFICATION
@@ -88,3 +89,9 @@ samtools:
   sort:
     chunk_size: "4G"
     chunk_size_bigmem: "16G"  
+
+# MagicLamp
+# https://github.com/Arkadiy-Garber/MagicLamp
+magiclamp:
+  threads: 36
+

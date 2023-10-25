@@ -1,0 +1,3 @@
+[submodule "submodules/MagicLamp"]
+	path = submodules/MagicLamp
+	url = https://github.com/Arkadiy-Garber/MagicLamp

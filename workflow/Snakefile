@@ -99,6 +99,14 @@ if "coverage" in STEPS:
         "status/coverage.done"
     ]
 
+# Functions
+if "functions" in STEPS:
+    include:
+        "rules/functions.smk"
+    TARGETS += [
+        "status/functions.done"
+    ]
+
 
 # No targets
 if len(TARGETS) == 0:
