@@ -37,7 +37,7 @@ kraken2:
 
 # KAIJU
 kaiju:
-  threads: 4
+  threads: 12
   level: "species"
   fmi: "/hdd0/susbus/databases/kaiju/kaiju_db_nr_euk.fmi"
   nodes: "/hdd0/susbus/databases/kaiju/nodes.dmp"
