@@ -33,10 +33,10 @@ rule trim_galore_pe:
     input:
         [lambda wildcards: SAMPLES.loc[wildcards.sid, "sR1"], lambda wildcards: SAMPLES.loc[wildcards.sid, "sR2"]],
     output:
-        fasta_fwd=os.path.join(RESULTS_DIR, "preprocessed/trimmed/{sid}/{sid}_R1.fq.gz"),
-        report_fwd=os.path.join(RESULTS_DIR, "preprocessed/trimmed/reports/{sid}_R1_trimming_report.txt"),
-        fasta_rev=os.path.join(RESULTS_DIR, "preprocessed/trimmed/{sid}/{sid}_R2.fq.gz"),
-        report_rev=os.path.join(RESULTS_DIR, "preprocessed/trimmed/reports/{sid}_R2_trimming_report.txt")
+        fasta_fwd=os.path.join(RESULTS_DIR, "preprocessed/trimmed/{sid}/{sid}_1.fq.gz"),
+        report_fwd=os.path.join(RESULTS_DIR, "preprocessed/trimmed/reports/{sid}_1.fq.gz_trimming_report.txt"),
+        fasta_rev=os.path.join(RESULTS_DIR, "preprocessed/trimmed/{sid}/{sid}_2.fq.gz"),
+        report_rev=os.path.join(RESULTS_DIR, "preprocessed/trimmed/reports/{sid}_2.fq.gz_trimming_report.txt")
     threads:
         config["trim_galore"]["threads"]
     params:
@@ -52,7 +52,7 @@ rule trim_galore_pe:
         "Trimming paired end reads for {wildcards.sid}"
     shell:
         "(date && "
-         "trim_galore -j {threads} {params.extra} -o $(dirname {output.fasta_fwd}) --paired {input} &&"
+         "trim_galore -j {threads} {params.extra} --basename {wildcards.sid} -o $(dirname {output.fasta_fwd}) --paired {input} &&"
         "date) &> {log}"
 
 #    wrapper:
