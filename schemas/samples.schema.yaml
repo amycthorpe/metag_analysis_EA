@@ -1,0 +1,34 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+
+title: sample table
+
+properties:
+  Sample_ID:
+    type: string
+    pattern: "^[A-Za-z0-9_-]+$"
+    description: sample ID
+      #  sR1:
+      #    type: [string, null]
+      #    pattern: "^.*/metag/fastq/[a-zA-Z0-9]+_DNA_(S[0-9]+)+_R1_[0-9]+\\.fastq\\.gz$" # TODO
+      #    description: Absolute path to short read R1 FASTQ file
+      #  sR2:
+      #    type: [string, null]
+      #    pattern: "^.*/metag/fastq/[a-zA-Z0-9]+_DNA_(S[0-9]+)+_R2_[0-9]+\\.fastq\\.gz$" # TODO
+      #    description: Absolute path to short read R2 FASTQ file
+      #  long_reads:
+      #    type: [string, null]
+      #    pattern: "^.*/long_reads/fastq/([a-zA-Z0-9]+_long_(S[0-9]+)+_R1_[0-9]+\\.fastq\\.gz$"
+      #    description: Absolute path to long read R1 FASTQ file
+      #  Group:
+      #    type: string
+      #    pattern: "^[A-Za-z0-9_-]+$"
+      #    description: sample grouping
+
+required:
+  - Sample_ID
+  # - group # TODO
+  # - sR1 # TODO
+  # - sR2 # TODO
+  # - lR1 # TODO
+  # - lR2 # TODO
+

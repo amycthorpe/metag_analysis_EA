@@ -36,8 +36,11 @@ rule trim_galore_pe:
         config["trim_galore"]["threads"]
     params:
         extra="--illumina -q 20",
+        debug=lambda wildcards: print(f"Wildcards for rule trim_galore_pe: {wildcards}")
     log:
         os.path.join(RESULTS_DIR, "logs/trim_galore/{sid}.log")
+    wildcard_constraints:
+        sid="|".join(SAMPLES.index)
     message:
         "Trimming paired end reads for {wildcards.sid}"
     wrapper:
@@ -76,6 +79,8 @@ rule map_to_mask:
         os.path.join(ENV_DIR, "bwa.yaml")
     message:
         "Mapping trimmed {wildcards.sid} reads to filter"
+    wildcard_constraints:
+        sid="|".join(SAMPLES.index)
     shell:
         "(date && "
         "bwa mem -t {threads} {input.index} {input.r1} {input.r2} | samtools view -b -f 12 -@{threads} - | samtools sort -@{threads} - > {output.bam} && "
@@ -94,6 +99,8 @@ rule bam_to_fastq:
         os.path.join(RESULTS_DIR, "logs/bam_to_fastq/{sid}.log")
     conda:
         os.path.join(ENV_DIR, "bedtools.yaml")
+    wildcard_constraints:
+        sid="|".join(SAMPLES.index)
     message:
         "Getting fastq files from BAM for {wildcards.sid}"
     shell:
@@ -109,7 +116,7 @@ rule fastqc:
     log:
         os.path.join(RESULTS_DIR, "logs/fastqc/{sid}_{rid}.log")
     wildcard_constraints:
-        sid="|".join(SAMPLES),
+        sid="|".join(SAMPLES.index),
         rid="R1|R2"
     threads:
         config["fastqc"]["threads"]
@@ -123,7 +130,8 @@ rule fastqc:
 # Collating QC results
 rule multiqc_fastqc:
     input:
-        expand(os.path.join(RESULTS_DIR, "preprocessed/fastqc/{{sid}}/{sid}_{rid}_fastqc.zip"), sid=SAMPLES, rid=["R1", "R2"])
+         lambda wildcards: expand(os.path.join(RESULTS_DIR, "preprocessed/fastqc/{{sid}}/{sid}_{rid}_fastqc.zip"), sid="|".join(SAMPLES.index), rid=["R1", "R2"])
+#        expand(os.path.join(RESULTS_DIR, "preprocessed/fastqc/{{sid}}/{sid}_{rid}_fastqc.zip"), sid=SAMPLES, rid=["R1", "R2"])
     output:
         html=os.path.join(RESULTS_DIR, "preprocessed/multiqc/fastqc/multiqc_report.html"),
         stat=os.path.join(RESULTS_DIR, "preprocessed/multiqc/fastqc/multiqc_data/multiqc_fastqc.txt"),
@@ -135,5 +143,7 @@ rule multiqc_fastqc:
         os.path.join(ENV_DIR, "multiqc.yaml")
     message:
         "MultiQC (FastQC)"
+    wildcard_constraints:
+        sid="|".join(SAMPLES.index)
     shell:
         "multiqc --interactive -p -f -m fastqc -o $(dirname {output.html}) $(dirname {input[0]}) &> {log}"
