@@ -40,7 +40,7 @@ rule trim_galore_pe:
     threads:
         config["trim_galore"]["threads"]
     params:
-        extra="--illumina -q 20",
+        extra="--illumina -q 25",
         debug=lambda wildcards: print(f"Wildcards for rule trim_galore_pe: {wildcards}")
     log:
         os.path.join(RESULTS_DIR, "logs/trim_galore/{sid}.log")
@@ -48,8 +48,13 @@ rule trim_galore_pe:
         sid="|".join(SAMPLES.index)
     message:
         "Trimming paired end reads for {wildcards.sid}"
-    wrapper:
-        "v2.6.0/bio/trim_galore/pe"
+    shell:
+        "(date && "
+         "trim_galore -j {threads} {params.extra} -o $(dirname {output.fasta_fwd}) --paired {input} &&"
+        "date) &> {log}"
+
+#    wrapper:
+#        "v2.13.0/bio/trim_galore/pe"
 
 # Indexing fasta file to be filtered from
 rule index:
