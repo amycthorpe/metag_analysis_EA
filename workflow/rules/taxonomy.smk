@@ -28,8 +28,9 @@ localrules: phyloseq_input_kraken2
 # Taxonomic classification using KRAKEN2
 rule kraken2:
     input:
-        os.path.join(DATA_DIR, "{sid}_R1.fq.gz"),  # os.path.join(DATA_DIR, "00.RawData/{sid}/{sid}_R1.fastq.gz"),
-        os.path.join(DATA_DIR, "{sid}_R2.fq.gz") # os.path.join(DATA_DIR, "00.RawData/{sid}/{sid}_R2.fastq.gz")
+         [lambda wildcards: SAMPLES.loc[wildcards.sid, "sR1"], lambda wildcards: SAMPLES.loc[wildcards.sid, "sR2"]]        
+#        os.path.join(DATA_DIR, "{sid}_R1.fq.gz"),  # os.path.join(DATA_DIR, "00.RawData/{sid}/{sid}_R1.fastq.gz"),
+#        os.path.join(DATA_DIR, "{sid}_R2.fq.gz") # os.path.join(DATA_DIR, "00.RawData/{sid}/{sid}_R2.fastq.gz")
     output:
         report=os.path.join(RESULTS_DIR, "kraken2/{sid}_kraken.report"),
         summary=os.path.join(RESULTS_DIR, "kraken2/{sid}_kraken.out")

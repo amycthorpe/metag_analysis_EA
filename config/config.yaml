@@ -8,20 +8,22 @@ steps: ["taxonomy", "assembly", "contig_taxonomy", "annotation", "kaiju", "cover
 ############################################################
 # INPUT
 # Directory where the workflow exists
-work_dir: "/ssd0/susbus/socd/metag_analyses"
+work_dir: "/ssd0/susbus/ea_biofilm/metag_analyses"
 
 # Directory where the data files are
-data_dir: "/ssd0/susbus/socd/data/preprocessed" #"/hdd0/susbus/nf_core/data/hebe_16S"
+data_dir: "/hdd0/raid3/scratch/MEGshared/ea_biofilm/data" # USER_INPUT
 
 # Directory for the results
-results_dir: "/hdd0/susbus/socd/results"
+results_dir: "/hdd0/raid3/scratch/MEGshared/ea_biofilm/results" # USER_INPUT
 
 # Directory where the conda environments are
-env_dir: "/ssd0/susbus/socd/metag_analyses/envs"
+env_dir: "/ssd0/susbus/ea_biofilm/metag_analyses/envs"
 
 # Directory with scripts
-src_dir: "/ssd0/susbus/socd/metag_analyses/scripts"
+src_dir: "/ssd0/susbus/ea_biofilm/metag_analyses/scripts"
 
+# Samples (if a relative path, relative to this repo)
+samples: "config/samples.tsv" # USER_INPUT
 
 ############################################################
 # TOOLS 

@@ -47,4 +47,6 @@ STEPS = config["steps"]
 
 ##############################
 # Input
-SAMPLES = [line.strip() for line in open("config/socd_sample_list").readlines()]
+# SAMPLES = [line.strip() for line in open("config/socd_sample_list").readlines()]
+# Sample table (tab-separated, w/ header, 1st column is sample ID)
+SAMPLES = pd.read_csv(config["samples"], header=0, sep="\t").set_index("Sample_ID", drop=False)
