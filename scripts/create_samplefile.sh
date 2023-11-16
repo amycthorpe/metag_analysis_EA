@@ -5,7 +5,7 @@ echo -e "Sample_ID\tsR1\tsR2" > samples.tsv
 find /hdd0/raid3/scratch/MEGshared/ea_biofilm/data -type f \( -name "*_1.fq.gz" -o -name "*_2.fq.gz" \) | sort | \
 while read -r file; do
     dir=$(dirname "$file")
-    sample_id=$(basename "$dir" | sed 's/_2021//')
+    sample_id=$(basename "$dir" | sed 's/_202[12]//')
 
     if [[ $file == *_1.fq.gz ]]; then
         sR1="$file"

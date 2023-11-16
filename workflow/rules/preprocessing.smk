@@ -16,7 +16,7 @@ samples=list(SAMPLES.index)
 ############################################
 rule preprocessing:
     input:
-        expand(os.path.join(RESULTS_DIR, "preprocessed/trimmed/{sid}/{sid}_{rid}.fq.gz"), sid=SAMPLES.index, rid=["R1", "R2"]),
+        expand(os.path.join(RESULTS_DIR, "preprocessed/trimmed/{sid}/{sid}_{rid}.fq.gz"), sid=SAMPLES.index, rid=["1", "2"]),
         expand(os.path.join(RESULTS_DIR, "preprocessed/fastqc/{sid}/{sid}_{rid}_fastqc.zip"), sid=SAMPLES.index, rid=["R1", "R2"]),
         os.path.join(RESULTS_DIR, "preprocessed/multiqc/fastqc/multiqc_report.html")
     output:
