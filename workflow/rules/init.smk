@@ -18,7 +18,6 @@ validate(config, srcdir("../../schemas/config.schema.yaml"))
 SAMPLES = pd.read_csv(config["samples"], header=0, sep="\t").set_index("Sample_ID", drop=False)
 # Sample table validation
 validate(SAMPLES, srcdir("../../schemas/samples.schema.yaml"))
-print(SAMPLES)
 
 
 ###################################################

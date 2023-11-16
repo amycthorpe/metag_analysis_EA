@@ -128,10 +128,29 @@ rule fastqc:
         "fastqc -q -f fastq -t {threads} -o $(dirname {output.zip}) {input} &> {log}"
 
 # Collating QC results
+#rule multiqc_fastqc:
+#    input:
+##         lambda wildcards: expand(os.path.join(RESULTS_DIR, "preprocessed/fastqc/{{sid}}/{sid}_{rid}_fastqc.zip"), sid="|".join(SAMPLES.index), rid=["R1", "R2"])
+#        expand(os.path.join(RESULTS_DIR, "preprocessed/fastqc/{{sid}}/{sid}_{rid}_fastqc.zip"), sid=list(SAMPLES.index), rid=["R1", "R2"])
+#    output:
+#        html=os.path.join(RESULTS_DIR, "preprocessed/multiqc/fastqc/multiqc_report.html"),
+#        stat=os.path.join(RESULTS_DIR, "preprocessed/multiqc/fastqc/multiqc_data/multiqc_fastqc.txt"),
+#    log:
+#        os.path.join(RESULTS_DIR, "multiqc/fastqc/multiqc.log")
+#    threads:
+#        config["fastqc"]["threads"]
+#    conda:
+#        os.path.join(ENV_DIR, "multiqc.yaml")
+#    message:
+#        "MultiQC (FastQC)"
+#    wildcard_constraints:
+#        sid="|".join(SAMPLES.index)
+#    shell:
+#        "multiqc --interactive -p -f -m fastqc -o $(dirname {output.html}) $(dirname {input[0]}) &> {log}"
+
 rule multiqc_fastqc:
     input:
-         lambda wildcards: expand(os.path.join(RESULTS_DIR, "preprocessed/fastqc/{{sid}}/{sid}_{rid}_fastqc.zip"), sid="|".join(SAMPLES.index), rid=["R1", "R2"])
-#        expand(os.path.join(RESULTS_DIR, "preprocessed/fastqc/{{sid}}/{sid}_{rid}_fastqc.zip"), sid=SAMPLES, rid=["R1", "R2"])
+        lambda wildcards: expand(os.path.join(RESULTS_DIR, "preprocessed/fastqc/{sid}/{sid}_{rid}_fastqc.zip"), sid=wildcards.sid, rid=["R1", "R2"])
     output:
         html=os.path.join(RESULTS_DIR, "preprocessed/multiqc/fastqc/multiqc_report.html"),
         stat=os.path.join(RESULTS_DIR, "preprocessed/multiqc/fastqc/multiqc_data/multiqc_fastqc.txt"),
@@ -143,7 +162,6 @@ rule multiqc_fastqc:
         os.path.join(ENV_DIR, "multiqc.yaml")
     message:
         "MultiQC (FastQC)"
-    wildcard_constraints:
-        sid="|".join(SAMPLES.index)
     shell:
         "multiqc --interactive -p -f -m fastqc -o $(dirname {output.html}) $(dirname {input[0]}) &> {log}"
+
