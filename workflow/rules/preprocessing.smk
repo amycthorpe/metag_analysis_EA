@@ -44,6 +44,8 @@ rule trim_galore_pe:
         debug=lambda wildcards: print(f"Wildcards for rule trim_galore_pe: {wildcards}")
     log:
         os.path.join(RESULTS_DIR, "logs/trim_galore/{sid}.log")
+    conda:
+        os.path.join(ENV_DIR, "trim_galore.yaml")
     wildcard_constraints:
         sid="|".join(SAMPLES.index)
     message:
