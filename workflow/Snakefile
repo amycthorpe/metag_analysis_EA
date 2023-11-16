@@ -35,6 +35,14 @@ TARGETS = []
 
 # TARGETS.append("status/prepare_input.done") # TEST
 
+# Human filtering & Preprocessing
+if "preprocessing" in STEPS:
+    include:
+        "rules/preprocessing.smk"
+    TARGETS += [
+        "status/preprocessing.done"
+    ]
+
 # Kraken2+BRACKEN
 if "taxonomy" in STEPS:
     include:
