@@ -29,7 +29,7 @@ samples: "config/samples.tsv" # USER_INPUT
 # TOOLS 
 # PREPROCESSING
 trim_galore:
-  threads: 8
+  threads: 16
 
 # FILTERING 
 filter:

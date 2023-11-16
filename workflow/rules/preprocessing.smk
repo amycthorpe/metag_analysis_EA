@@ -16,7 +16,7 @@ samples=list(SAMPLES.index)
 ############################################
 rule preprocessing:
     input:
-        expand(os.path.join(RESULTS_DIR, "preprocessed/trimmed/{sid}/{sid}_{rid}.fq.gz"), sid=SAMPLES.index, rid=["1", "2"]),
+        expand(os.path.join(RESULTS_DIR, "preprocessed/trimmed/{sid}/{sid}_val_{rid}.fq.gz"), sid=SAMPLES.index, rid=["1", "2"]),
         expand(os.path.join(RESULTS_DIR, "preprocessed/fastqc/{sid}/{sid}_{rid}_fastqc.zip"), sid=SAMPLES.index, rid=["R1", "R2"]),
         os.path.join(RESULTS_DIR, "preprocessed/multiqc/fastqc/multiqc_report.html")
     output:
@@ -33,10 +33,10 @@ rule trim_galore_pe:
     input:
         [lambda wildcards: SAMPLES.loc[wildcards.sid, "sR1"], lambda wildcards: SAMPLES.loc[wildcards.sid, "sR2"]],
     output:
-        fasta_fwd=os.path.join(RESULTS_DIR, "preprocessed/trimmed/{sid}/{sid}_1.fq.gz"),
-        report_fwd=os.path.join(RESULTS_DIR, "preprocessed/trimmed/reports/{sid}_1.fq.gz_trimming_report.txt"),
-        fasta_rev=os.path.join(RESULTS_DIR, "preprocessed/trimmed/{sid}/{sid}_2.fq.gz"),
-        report_rev=os.path.join(RESULTS_DIR, "preprocessed/trimmed/reports/{sid}_2.fq.gz_trimming_report.txt")
+        fasta_fwd=os.path.join(RESULTS_DIR, "preprocessed/trimmed/{sid}/{sid}_val_1.fq.gz"),
+#        report_fwd=os.path.join(RESULTS_DIR, "preprocessed/trimmed/reports/{sid}_1.fq.gz_trimming_report.txt"),
+        fasta_rev=os.path.join(RESULTS_DIR, "preprocessed/trimmed/{sid}/{sid}_val_2.fq.gz"),
+#        report_rev=os.path.join(RESULTS_DIR, "preprocessed/trimmed/reports/{sid}_2.fq.gz_trimming_report.txt")
     threads:
         config["trim_galore"]["threads"]
     params:
