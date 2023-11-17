@@ -2,7 +2,7 @@
 # STEPS
 
 # Steps to be done
-steps: ["preprocessing", "taxonomy", "assembly", "contig_taxonomy"] #, "annotation", "kaiju", "coverage", "functions"] #TODO: "eukaryotes", "coassembly"
+steps: ["preprocessing", "taxonomy"] #, "assembly", "contig_taxonomy"] #, "annotation", "kaiju", "coverage", "functions"] #TODO: "eukaryotes", "coassembly"
 
 
 ############################################################
@@ -33,7 +33,7 @@ trim_galore:
 
 # FILTERING 
 filter:
-  fasta: "/hdd0/susbus/databases/hg38/GRCh38_latest_genomic.fna.gz" # Downloaded on 2023-11-16 from https://ftp.ncbi.nlm.nih.gov/refseq/H_sapiens/annotation/GRCh38_latest/refseq_identifiers/GRCh38_latest_genomic.fna.gz
+  fasta: "/hdd0/susbus/databases/hg38/GRCh38_latest_genomic.fna" # Downloaded on 2023-11-16 from https://ftp.ncbi.nlm.nih.gov/refseq/H_sapiens/annotation/GRCh38_latest/refseq_identifiers/GRCh38_latest_genomic.fna.gz
 
 # QUALITY
 fastqc:

@@ -58,7 +58,7 @@ rule index:
     input:
         config["filter"]["fasta"]
     output:
-        expand(os.path.join(RESULTS_DIR, "preprocessed/filter/GRCh38_latest_genomic.fna.gz.{ext}"), ext=BWA_IDX_EXT)
+        expand(os.path.join(RESULTS_DIR, "preprocessed/filter/GRCh38_latest_genomic.fna.{ext}"), ext=BWA_IDX_EXT)
     threads:
         config["bwa"]["threads"]
     log:
@@ -75,7 +75,7 @@ rule map_to_mask:
     input:
         r1=rules.trim_galore_pe.output.fasta_fwd,
         r2=rules.trim_galore_pe.output.fasta_rev,
-        index=os.path.join(RESULTS_DIR, "preprocessed/filter/GRCh38_latest_genomic.fna.gz.sa")
+        index=os.path.join(RESULTS_DIR, "preprocessed/filter/GRCh38_latest_genomic.fna.sa")
     output:
         bam=temp(os.path.join(RESULTS_DIR, "preprocessed/bam/{sid}_filtered.bam"))
     threads:

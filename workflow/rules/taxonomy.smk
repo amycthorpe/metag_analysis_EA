@@ -9,11 +9,16 @@ Purpose: To run Kraken2+BRACKEN on reads
 
 
 ############################################
+# params:
+samples=list(SAMPLES.index)
+
+
+############################################
 rule taxonomy:
     input:
-        expand(os.path.join(RESULTS_DIR, "kraken2/{sid}_kraken.report"), sid=SAMPLES), 
-        expand(os.path.join(RESULTS_DIR, "bracken/{sid}.bracken"), sid=SAMPLES),
-        expand(os.path.join(RESULTS_DIR, "mpa_report/{sid}_mpa.tsv"), sid=SAMPLES),
+        expand(os.path.join(RESULTS_DIR, "kraken2/{sid}_kraken.report"), sid=SAMPLES.index), 
+        expand(os.path.join(RESULTS_DIR, "bracken/{sid}.bracken"), sid=SAMPLES.index),
+        expand(os.path.join(RESULTS_DIR, "mpa_report/{sid}_mpa.tsv"), sid=SAMPLES.index),
         os.path.join(RESULTS_DIR, "mpa_report/combined_output.tsv"),
         os.path.join(RESULTS_DIR, "bracken/combined_bracken.txt")
     output:
@@ -28,9 +33,11 @@ localrules: phyloseq_input_kraken2
 # Taxonomic classification using KRAKEN2
 rule kraken2:
     input:
-         [lambda wildcards: SAMPLES.loc[wildcards.sid, "sR1"], lambda wildcards: SAMPLES.loc[wildcards.sid, "sR2"]]        
-#        os.path.join(DATA_DIR, "{sid}_R1.fq.gz"),  # os.path.join(DATA_DIR, "00.RawData/{sid}/{sid}_R1.fastq.gz"),
-#        os.path.join(DATA_DIR, "{sid}_R2.fq.gz") # os.path.join(DATA_DIR, "00.RawData/{sid}/{sid}_R2.fastq.gz")
+        r1=os.path.join(RESULTS_DIR, "preprocessed/trimmed/{sid}/{sid}_val_1.fq.gz"),
+        r2=os.path.join(RESULTS_DIR, "preprocessed/trimmed/{sid}/{sid}_val_2.fq.gz")
+#         [lambda wildcards: SAMPLES.loc[wildcards.sid, "sR1"], lambda wildcards: SAMPLES.loc[wildcards.sid, "sR2"]]        
+#        os.path.join(DATA_DIR, "{sid}_R1.fq.gz"),  
+#        os.path.join(DATA_DIR, "{sid}_R2.fq.gz") 
     output:
         report=os.path.join(RESULTS_DIR, "kraken2/{sid}_kraken.report"),
         summary=os.path.join(RESULTS_DIR, "kraken2/{sid}_kraken.out")
@@ -43,6 +50,8 @@ rule kraken2:
         confidence=config['kraken2']['confidence']
     log:
         os.path.join(RESULTS_DIR, "logs/kraken2.{sid}.log")
+    wildcard_constraints:
+        sid="|".join(SAMPLES.index)
     message:
         "Running kraken2 on {wildcards.sid}"
     shell:
@@ -61,6 +70,8 @@ use rule kraken2 as struo2_kraken2 with:
         confidence=config['kraken2']['confidence']
     log:
         os.path.join(RESULTS_DIR, "logs/struo2_kraken2.{sid}.log")
+    wildcard_constraints:
+        sid="|".join(SAMPLES.index)
     message:
         "Running {wildcards.sid} with the Struo2_Kraken2 db"
 
@@ -68,8 +79,8 @@ use rule kraken2 as struo2_kraken2 with:
 rule bracken:
     input:
         report=rules.kraken2.output.report,
-        r1=os.path.join(DATA_DIR, "{sid}_R1.fq.gz"),  # os.path.join(DATA_DIR, "00.RawData/{sid}/{sid}_R1.fastq.gz"),
-        r2=os.path.join(DATA_DIR, "{sid}_R2.fq.gz") # os.path.join(DATA_DIR, "00.RawData/{sid}/{sid}_R2.fastq.gz")
+        r1=os.path.join(RESULTS_DIR, "preprocessed/trimmed/{sid}/{sid}_val_1.fq.gz"),  # os.path.join(DATA_DIR, "00.RawData/{sid}/{sid}_R1.fastq.gz"),
+        r2=os.path.join(RESULTS_DIR, "preprocessed/trimmed/{sid}/{sid}_val_2.fq.gz") # os.path.join(DATA_DIR, "00.RawData/{sid}/{sid}_R2.fastq.gz")
     output:
         bracken=os.path.join(RESULTS_DIR, "bracken/{sid}.bracken"),
         report=os.path.join(RESULTS_DIR, "bracken/{sid}_bracken.report")
@@ -84,6 +95,8 @@ rule bracken:
         bracken=config['bracken']['bin']
     log:
         os.path.join(RESULTS_DIR, "logs/bracken.{sid}.log")
+    wildcard_constraints:
+        sid="|".join(SAMPLES.index)
     message:
         "Running kraken & bracken for {wildcards.sid}"
     shell:
@@ -97,7 +110,7 @@ rule remove_uncultured:
     log:
         os.path.join(RESULTS_DIR, "logs/edited_bracken_{sid}")
     wildcard_constraints:
-        sid="|".join(SAMPLES)
+        sid="|".join(SAMPLES.index)
     message:
         "Removing 'uncultured' taxa from bracken output from {wildcards.sid} due to combining issues"
     shell:
@@ -105,7 +118,7 @@ rule remove_uncultured:
 
 rule combine_bracken:
     input:
-        bracken=expand(os.path.join(RESULTS_DIR, "bracken/{sid}_edited.bracken"), sid=SAMPLES)
+        bracken=expand(os.path.join(RESULTS_DIR, "bracken/{sid}_edited.bracken"), sid=samples)
     output:
         out=os.path.join(RESULTS_DIR, "bracken/combined_bracken.txt")
     conda:
@@ -114,6 +127,8 @@ rule combine_bracken:
         combine=config['bracken']['combine']
     log:
         os.path.join(RESULTS_DIR, "logs/bracken_combine.log")
+    wildcard_constraints:
+        sid="|".join(SAMPLES.index)
     message:
         "Combining all the output from BRACKEN"
     shell:
@@ -132,7 +147,7 @@ rule mpa_report:
     log:
         os.path.join(RESULTS_DIR, "logs/mpa_{sid}.log")
     wildcard_constraints:
-        sid="|".join(SAMPLES)
+        sid="|".join(SAMPLES.index)
     message:
         "Creating mpa-style report for {wildcards.sid}"
     shell:
@@ -140,7 +155,7 @@ rule mpa_report:
 
 rule combine_mpa:
     input:
-        mpa=expand(os.path.join(RESULTS_DIR, "mpa_report/{sid}_mpa.tsv"), sid=SAMPLES)
+        mpa=expand(os.path.join(RESULTS_DIR, "mpa_report/{sid}_mpa.tsv"), sid=samples)
     output:
         combined=os.path.join(RESULTS_DIR, "mpa_report/combined_output.tsv")
     conda:

@@ -38,6 +38,8 @@ rule contig_kraken2:
         confidence=config['kraken2']['contig_confidence']
     log:
         os.path.join(RESULTS_DIR, "logs/contig/kraken2.{sid}.log")
+    wildcard_constraints:
+        sid="|".join(SAMPLES.index)
     message:
         "Running kraken2 on {wildcards.sid}"
     shell:
@@ -55,6 +57,8 @@ use rule contig_kraken2 as contig_struo2_kraken2 with:
         confidence=config['kraken2']['confidence']
     log:
         os.path.join(RESULTS_DIR, "logs/contig/struo2_kraken2.{sid}.log")
+    wildcard_constraints:
+        sid="|".join(SAMPLES.index)
     message:
         "Running {wildcards.sid} with the Struo2_Kraken2 db"
 
@@ -62,8 +66,8 @@ use rule contig_kraken2 as contig_struo2_kraken2 with:
 rule contig_bracken:
     input:
         report=rules.contig_kraken2.output.report,
-        r1=os.path.join(DATA_DIR, "{sid}_R1.fq.gz"),  # os.path.join(DATA_DIR, "00.RawData/{sid}/{sid}_R1.fastq.gz"),
-        r2=os.path.join(DATA_DIR, "{sid}_R2.fq.gz") # os.path.join(DATA_DIR, "00.RawData/{sid}/{sid}_R2.fastq.gz")
+        r1=os.path.join(RESULTS_DIR, "preprocessed/trimmed/{sid}/{sid}_val_1.fq.gz"),  # os.path.join(DATA_DIR, "00.RawData/{sid}/{sid}_R1.fastq.gz"),
+        r2=os.path.join(RESULTS_DIR, "preprocessed/trimmed/{sid}/{sid}_val_2.fq.gz") # os.path.join(DATA_DIR, "00.RawData/{sid}/{sid}_R2.fastq.gz")
     output:
         bracken=os.path.join(RESULTS_DIR, "bracken/contig/{sid}.bracken"),
         report=os.path.join(RESULTS_DIR, "bracken/contig/{sid}_bracken.report")
@@ -78,6 +82,8 @@ rule contig_bracken:
         bracken=config['bracken']['bin']
     log:
         os.path.join(RESULTS_DIR, "logs/contig/bracken.{sid}.log")
+    wildcard_constraints:
+        sid="|".join(SAMPLES.index)
     message:
         "Running kraken & bracken for {wildcards.sid}"
     shell:
@@ -90,6 +96,8 @@ rule contig_remove_uncultured:
         edited=os.path.join(RESULTS_DIR, "bracken/contig/{sid}_edited.bracken")
     log:
         os.path.join(RESULTS_DIR, "logs/contig/edited_bracken_{sid}")
+    wildcard_constraints:
+        sid="|".join(SAMPLES.index)
     message:
         "Removing 'uncultured' taxa from bracken output from {wildcards.sid} due to combining issues"
     shell:
@@ -97,7 +105,7 @@ rule contig_remove_uncultured:
 
 rule contig_combine_bracken:
     input:
-        bracken=expand(os.path.join(RESULTS_DIR, "bracken/contig/{sid}_edited.bracken"), sid=SAMPLES)
+        bracken=expand(os.path.join(RESULTS_DIR, "bracken/contig/{sid}_edited.bracken"), sid=SAMPLES.index)
     output:
         out=os.path.join(RESULTS_DIR, "bracken/contig/combined_bracken.txt")
     conda:
@@ -124,7 +132,7 @@ rule contig_mpa_report:
     log:
         os.path.join(RESULTS_DIR, "logs/contig/mpa_{sid}.log")
     wildcard_constraints:
-        sid="|".join(SAMPLES)
+        sid="|".join(SAMPLES.index)
     message:
         "Creating mpa-style report for {wildcards.sid}"
     shell:
@@ -132,7 +140,7 @@ rule contig_mpa_report:
 
 rule contig_combine_mpa:
     input:
-        mpa=expand(os.path.join(RESULTS_DIR, "mpa_report/contig/{sid}_mpa.tsv"), sid=SAMPLES)
+        mpa=expand(os.path.join(RESULTS_DIR, "mpa_report/contig/{sid}_mpa.tsv"), sid=SAMPLES.index)
     output:
         combined=os.path.join(RESULTS_DIR, "mpa_report/contig/combined_output.tsv")
     conda:
