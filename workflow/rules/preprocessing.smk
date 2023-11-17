@@ -73,7 +73,7 @@ rule index:
     message:
         "Indexing the filtering fasta file"
     shell:
-        ""(date && bwa index {input} -p {params.idx_prefix} && date) &> {log}"
+        "(date && bwa index {input} -p {params.idx_prefix} && date) &> {log}"
 
 # Mapping raw reads to filter
 rule map_to_mask:
