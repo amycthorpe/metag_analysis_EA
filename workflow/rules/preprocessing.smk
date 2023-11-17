@@ -69,11 +69,11 @@ rule index:
     log:
         os.path.join(RESULTS_DIR, "logs/filter/filter.index.log")
     params:
-        algorithm="bwtsw"
+        idx_prefix=lambda wildcards, output: os.path.splitext(output[0])[0]        
     message:
         "Indexing the filtering fasta file"
-    wrapper:
-        "v2.6.0/bio/bwa/index"
+    shell:
+        ""(date && bwa index {input} -p {params.idx_prefix} && date) &> {log}"
 
 # Mapping raw reads to filter
 rule map_to_mask:
