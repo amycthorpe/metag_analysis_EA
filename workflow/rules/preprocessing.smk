@@ -34,9 +34,7 @@ rule trim_galore_pe:
         [lambda wildcards: SAMPLES.loc[wildcards.sid, "sR1"], lambda wildcards: SAMPLES.loc[wildcards.sid, "sR2"]],
     output:
         fasta_fwd=os.path.join(RESULTS_DIR, "preprocessed/trimmed/{sid}/{sid}_val_1.fq.gz"),
-#        report_fwd=os.path.join(RESULTS_DIR, "preprocessed/trimmed/reports/{sid}_1.fq.gz_trimming_report.txt"),
         fasta_rev=os.path.join(RESULTS_DIR, "preprocessed/trimmed/{sid}/{sid}_val_2.fq.gz"),
-#        report_rev=os.path.join(RESULTS_DIR, "preprocessed/trimmed/reports/{sid}_2.fq.gz_trimming_report.txt")
     threads:
         config["trim_galore"]["threads"]
     params:
@@ -54,9 +52,6 @@ rule trim_galore_pe:
         "(date && "
          "trim_galore -j {threads} {params.extra} --basename {wildcards.sid} -o $(dirname {output.fasta_fwd}) --paired {input} &&"
         "date) &> {log}"
-
-#    wrapper:
-#        "v2.13.0/bio/trim_galore/pe"
 
 # Indexing fasta file to be filtered from
 rule index:
@@ -139,7 +134,6 @@ rule fastqc:
     shell:
         "fastqc -q -f fastq -t {threads} -o $(dirname {output.zip}) {input} &> {log}"
 
-# Collating QC results
 #rule multiqc_fastqc:
 #    input:
 ##         lambda wildcards: expand(os.path.join(RESULTS_DIR, "preprocessed/fastqc/{{sid}}/{sid}_{rid}_fastqc.zip"), sid="|".join(SAMPLES.index), rid=["R1", "R2"])

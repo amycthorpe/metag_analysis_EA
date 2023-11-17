@@ -2,7 +2,7 @@
 # STEPS
 
 # Steps to be done
-steps: ["preprocessing"] #"taxonomy", "assembly", "contig_taxonomy", "annotation", "kaiju", "coverage", "functions"] #TODO: "eukaryotes", "coassembly"
+steps: ["preprocessing", "taxonomy", "assembly", "contig_taxonomy"] #, "annotation", "kaiju", "coverage", "functions"] #TODO: "eukaryotes", "coassembly"
 
 
 ############################################################
