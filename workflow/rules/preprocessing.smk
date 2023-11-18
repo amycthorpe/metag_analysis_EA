@@ -90,7 +90,7 @@ rule map_to_mask:
         sid="|".join(SAMPLES.index)
     shell:
         "(date && "
-        "bwa mem -t {threads} {input.index} {input.r1} {input.r2} | samtools view -b -f 12 -@{threads} - | samtools sort -@{threads} - > {output.bam} && "
+        "bwa mem -t {threads} $(dirname {input.index})/$(basename -s '.sa' {input.index}) {input.r1} {input.r2} | samtools view -b -f 12 -@{threads} - | samtools sort -@{threads} - > {output.bam} && "
         "date) &> {log}"
 
 # Convert bam to paired-end fq

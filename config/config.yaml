@@ -42,7 +42,7 @@ fastqc:
 # CLASSIFICATION
 kraken2:
   db: "/hdd0/susbus/databases/kraken2/pluspfp/"
-  confidence: 0.5
+  confidence: 0.2
   contig_confidence: 0.2
   threads: 12
   read: 150
