@@ -98,8 +98,8 @@ rule bam_to_fastq:
     input:
         rules.map_to_mask.output.bam
     output:
-        r1=os.path.join(RESULTS_DIR, "preprocessed/reads/{sid}/{sid}_filtered.R1.fq.gz"),
-        r2=os.path.join(RESULTS_DIR, "preprocessed/reads/{sid}/{sid}_filtered.R2.fq.gz")
+        r1=os.path.join(RESULTS_DIR, "preprocessed/reads/{sid}/{sid}_filtered.R1.fq"),
+        r2=os.path.join(RESULTS_DIR, "preprocessed/reads/{sid}/{sid}_filtered.R2.fq")
     threads:
         config["bwa"]["threads"]
     log:
@@ -116,7 +116,7 @@ rule bam_to_fastq:
 # Running QC
 rule fastqc:
     input:
-        os.path.join(RESULTS_DIR, "preprocessed/reads/{sid}/{sid}_filtered.{rid}.fq.gz")
+        os.path.join(RESULTS_DIR, "preprocessed/reads/{sid}/{sid}_filtered.{rid}.fq")
     output:
         zip=os.path.join(RESULTS_DIR, "preprocessed/fastqc/{sid}/{sid}_{rid}_fastqc.zip"),
         html=os.path.join(RESULTS_DIR, "preprocessed/fastqc/{sid}/{sid}_{rid}_fastqc.html")

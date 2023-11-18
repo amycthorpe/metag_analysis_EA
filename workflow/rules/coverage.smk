@@ -50,8 +50,8 @@ rule mapping_index:
 rule mapping:
     input:
         asm=os.path.join(RESULTS_DIR, "assembly/{sid}/{sid}.fasta"),
-        sr1=os.path.join(DATA_DIR, "{sid}_R1.fq.gz"),
-        sr2=os.path.join(DATA_DIR, "{sid}_R2.fq.gz"),
+        sr1=os.path.join(RESULTS_DIR, "preprocessed/reads/{sid}/{sid}_filtered.R1.fq"),
+        sr2=os.path.join(RESULTS_DIR, "preprocessed/reads/{sid}/{sid}_filtered.R2.fq"),
         idx=expand(os.path.join(RESULTS_DIR, "bam/{{sid}}/{{sid}}.{ext}"), ext=BWA_IDX_EXT)
     output:
         os.path.join(RESULTS_DIR, "bam/{sid}/{sid}.sorted.bam")
