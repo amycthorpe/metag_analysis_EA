@@ -119,7 +119,7 @@ rule fastqc:
         os.path.join(RESULTS_DIR, "preprocessed/reads/{sid}/{sid}_filtered.{rid}.fq")
     output:
         zip=os.path.join(RESULTS_DIR, "preprocessed/fastqc/{sid}/{sid}_filtered.{rid}_fastqc.zip"),
-        html=os.path.join(RESULTS_DIR, "preprocessed/fastqc/{sid}/{sid}_{filtered.{rid}_fastqc.html")
+        html=os.path.join(RESULTS_DIR, "preprocessed/fastqc/{sid}/{sid}_filtered.{rid}_fastqc.html")
     log:
         os.path.join(RESULTS_DIR, "logs/fastqc/{sid}_{rid}.log")
     wildcard_constraints:
