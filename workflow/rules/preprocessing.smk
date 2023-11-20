@@ -17,7 +17,7 @@ samples=list(SAMPLES.index)
 rule preprocessing:
     input:
         expand(os.path.join(RESULTS_DIR, "preprocessed/trimmed/{sid}/{sid}_val_{rid}.fq.gz"), sid=SAMPLES.index, rid=["1", "2"]),
-        expand(os.path.join(RESULTS_DIR, "preprocessed/fastqc/{sid}/{sid}_{rid}_fastqc.zip"), sid=SAMPLES.index, rid=["R1", "R2"]),
+        expand(os.path.join(RESULTS_DIR, "preprocessed/fastqc/{sid}/{sid}_filtered.{rid}_fastqc.zip"), sid=SAMPLES.index, rid=["R1", "R2"]),
         os.path.join(RESULTS_DIR, "preprocessed/multiqc/fastqc/multiqc_report.html")
     output:
         touch("status/preprocessing.done")
@@ -118,8 +118,8 @@ rule fastqc:
     input:
         os.path.join(RESULTS_DIR, "preprocessed/reads/{sid}/{sid}_filtered.{rid}.fq")
     output:
-        zip=os.path.join(RESULTS_DIR, "preprocessed/fastqc/{sid}/{sid}_{rid}_fastqc.zip"),
-        html=os.path.join(RESULTS_DIR, "preprocessed/fastqc/{sid}/{sid}_{rid}_fastqc.html")
+        zip=os.path.join(RESULTS_DIR, "preprocessed/fastqc/{sid}/{sid}_filtered.{rid}_fastqc.zip"),
+        html=os.path.join(RESULTS_DIR, "preprocessed/fastqc/{sid}/{sid}_{filtered.{rid}_fastqc.html")
     log:
         os.path.join(RESULTS_DIR, "logs/fastqc/{sid}_{rid}.log")
     wildcard_constraints:
@@ -156,7 +156,7 @@ rule fastqc:
 
 rule multiqc_fastqc:
     input:
-        lambda wildcards: expand(os.path.join(RESULTS_DIR, "preprocessed/fastqc/{sid}/{sid}_{rid}_fastqc.zip"), sid=samples, rid=["R1", "R2"])
+        lambda wildcards: expand(os.path.join(RESULTS_DIR, "preprocessed/fastqc/{sid}/{sid}_filtered.{rid}_fastqc.zip"), sid=samples, rid=["R1", "R2"])
     output:
         html=os.path.join(RESULTS_DIR, "preprocessed/multiqc/fastqc/multiqc_report.html"),
         stat=os.path.join(RESULTS_DIR, "preprocessed/multiqc/fastqc/multiqc_data/multiqc_fastqc.txt"),
