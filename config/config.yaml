@@ -2,7 +2,7 @@
 # STEPS
 
 # Steps to be done
-steps: ["preprocessing", "taxonomy", "assembly", "contig_taxonomy"] #, "annotation", "kaiju", "coverage", "functions"] #TODO: "eukaryotes", "coassembly"
+steps: ["preprocessing", "taxonomy", "assembly", "contig_taxonomy", "binning"] #, "annotation", "kaiju", "coverage", "functions"] #TODO: "eukaryotes", "coassembly"
 
 
 ############################################################
@@ -109,3 +109,37 @@ samtools:
 magiclamp:
   threads: 36
 
+# BINNING
+filter_length:
+    threads: 4
+    
+mdmcleaner:
+    threads: 7
+
+mapping:
+    threads: 7
+
+metabat2:
+    threads: 14
+
+concoct:
+    threads: 14
+
+metabinner:
+    length: 2000
+    threads: 14
+
+dasTool:
+    threads: 14
+
+checkM:
+    threads: 14
+
+drep:
+    threads: 28
+    comp: 70
+    cont: 10
+
+gtdbtk:
+    threads: 14
+    path: "/scratch/users/gmichoud/DB/release207_v2"
