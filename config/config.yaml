@@ -71,7 +71,7 @@ bracken:
 # MEGAHIT
 # https://github.com/voutcn/megahit
 megahit:
-  threads: 12
+  threads: 24
   coassembly_threads: 70
 
 # DE-DUPLICATION
