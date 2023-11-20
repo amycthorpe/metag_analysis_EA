@@ -38,6 +38,8 @@ rule megahit:
         "Running MEGAHIT on {wildcards.sid}"
     wildcard_constraints:
         sid="|".join(SAMPLES.index)
+    benchmark:
+        os.path.join(RESULTS_DIR, "benchmarks/megahit.{sid}.txt")
     shell:
         "(date && megahit -1 {input.sr1} -2 {input.sr2} --kmin-1pass -m 0.9 --k-list 27,37,47,57,67,77,87 --min-contig-len 1000 -t {threads} -o $(dirname {output})/tmp && "
         "cd $(dirname {output}) && "
