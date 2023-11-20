@@ -99,6 +99,23 @@ if "eukaryotes" in STEPS:
         "status/eukaryotes.done"
     ]
 
+# Binning
+if "binning" in STEPS:
+    include:
+        "rules/bin_prep.smk"
+    include:
+        "rules/binning.smk"
+    include:
+        "rules/dereplicate.smk"
+    include:
+        "rules/bin_taxqual.done"
+    TARGETS += [
+        "status/bin_prep.done", 
+        "status/binning.done", 
+        "status/dereplicate.done",
+        "status/taxqual.done"
+    ]
+
 # Coverage
 if "coverage" in STEPS:
     include:

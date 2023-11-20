@@ -24,11 +24,11 @@ rule coassembly:
 # Concatenating the reads
 rule concat:
     input:
-        sr1=expand(os.path.join(DATA_DIR, "{sid}_R1.fq.gz"), sid=SAMPLES),
-        sr2=expand(os.path.join(DATA_DIR, "{sid}_R2.fq.gz"), sid=SAMPLES)
+        sr1=expand(os.path.join(DATA_DIR, "{sid}_filtered.R1.fq"), sid=SAMPLES),
+        sr2=expand(os.path.join(DATA_DIR, "{sid}_filtered.R2.fq"), sid=SAMPLES)
     output:
-        or1=os.path.join(RESULTS_DIR, "coassembly/reads/merged_R1.fq.gz"),
-        or2=os.path.join(RESULTS_DIR, "coassembly/reads/merged_R2.fq.gz")
+        or1=os.path.join(RESULTS_DIR, "coassembly/reads/merged_R1.fq"),
+        or2=os.path.join(RESULTS_DIR, "coassembly/reads/merged_R2.fq")
     log:
         os.path.join(RESULTS_DIR, "logs/concat_reads.log")
     message:
@@ -42,8 +42,8 @@ rule coassembly_dedup:
         r1=rules.concat.output.or1,
         r2=rules.concat.output.or2
     output:
-        odup1=os.path.join(RESULTS_DIR, "coassembly/dedup/merged_R1.fq.gz"),
-        odup2=os.path.join(RESULTS_DIR, "coassembly/dedup/merged_R2.fq.gz")
+        odup1=os.path.join(RESULTS_DIR, "coassembly/dedup/merged_R1.fq"),
+        odup2=os.path.join(RESULTS_DIR, "coassembly/dedup/merged_R2.fq")
     log:
         os.path.join(RESULTS_DIR, "logs/deduplicate_coassembly_reads.log")
     threads:
