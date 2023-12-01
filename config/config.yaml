@@ -2,7 +2,7 @@
 # STEPS
 
 # Steps to be done
-steps: ["preprocessing", "taxonomy", "assembly", "contig_taxonomy"] #, "binning"] #, "annotation", "kaiju", "coverage", "functions"] #TODO: "eukaryotes", "coassembly"
+steps: ["preprocessing", "taxonomy", "assembly", "contig_taxonomy", "kaiju", "annotation"] #, "binning", "coverage", "functions"] #TODO: "eukaryotes", "coassembly"
 
 
 ############################################################
@@ -71,7 +71,7 @@ bracken:
 # MEGAHIT
 # https://github.com/voutcn/megahit
 megahit:
-  threads: 24
+  threads: 36
   coassembly_threads: 70
 
 # DE-DUPLICATION
@@ -83,7 +83,7 @@ clumpify:
 
 # ANNOTATION
 prodigal:
-  threads: 8
+  threads: 12
 
 # Eukaryotes
 eukulele:

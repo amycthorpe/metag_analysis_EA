@@ -35,10 +35,12 @@ rule kaiju_classify:
     log:
         os.path.join(RESULTS_DIR, "logs/kaiju/{sid}_kaiju.log")
     params:
-        FASTA=",".join([os.path.join(RESULTS_DIR, f"assembly/{sid}/{sid}.fasta") for sid in SAMPLES]),
+        FASTA=",".join([os.path.join(RESULTS_DIR, f"assembly/{sid}/{sid}.fasta") for sid in SAMPLES.index]),
         fmi=config["kaiju"]["fmi"],
         nodes=config["kaiju"]["nodes"],
         names=config["kaiju"]["names"]
+    wildcard_constraints:
+        sid="|".join(SAMPLES.index)
     message:
         "Running KAIJU against the nr_protein database"
     shell:
@@ -49,7 +51,7 @@ rule kaiju_classify:
 
 rule kaiju_table:
     input:
-        expand(os.path.join(RESULTS_DIR, "kaiju/{sid}_kaiju_out.txt"), sid=SAMPLES)
+        expand(os.path.join(RESULTS_DIR, "kaiju/{sid}_kaiju_out.txt"), sid=SAMPLES.index)
     output:
         os.path.join(RESULTS_DIR, "kaiju/kaiju_summary.tsv")
     conda:

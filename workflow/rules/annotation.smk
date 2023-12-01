@@ -11,7 +11,7 @@ Purpose: To run gene calling via PRODIGAL on contigs
 ############################################
 rule annotation:
     input:
-        expand(os.path.join(RESULTS_DIR, "prodigal/{sid}/{sid}.{filetype}"), sid=SAMPLES, filetype=["faa", "gff"])
+        expand(os.path.join(RESULTS_DIR, "prodigal/{sid}/{sid}.{filetype}"), sid=SAMPLES.index, filetype=["faa", "gff"])
     output:
         touch("status/annotation.done")
 
@@ -34,6 +34,8 @@ rule prodigal:
         config['prodigal']['threads']
     log:
         os.path.join(RESULTS_DIR, "logs/prodigal.{sid}.log")
+    wildcard_constraints:
+        sid="|".join(SAMPLES.index)
     message:
         "Running PRODIGAL on {wildcards.sid}"
     shell:
