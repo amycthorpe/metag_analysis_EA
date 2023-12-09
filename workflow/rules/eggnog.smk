@@ -44,7 +44,7 @@ rule emapper:
         dummy=os.path.join(RESULTS_DIR, "eggnog/db_download.done"),
         fasta=os.path.join(RESULTS_DIR, "prodigal/{sid}/{sid}.faa")
     output:
-        os.path.join(RESULTS_DIR, "eggnog/{sid}/{sid}_emapper.seed_orthologs")
+        os.path.join(RESULTS_DIR, "eggnog/{sid}/{sid}.emapper.seed_orthologs")
     conda:
         os.path.join(ENV_DIR, "eggnog.yaml")
     threads:
