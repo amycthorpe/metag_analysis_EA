@@ -128,8 +128,11 @@ if "coverage" in STEPS:
 if "functions" in STEPS:
     include:
         "rules/functions.smk"
+    include:
+        "rules/eggnog.smk"
     TARGETS += [
-        "status/functions.done"
+        "status/functions.done",
+        "status/eggnog.done"
     ]
 
 

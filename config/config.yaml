@@ -109,6 +109,19 @@ samtools:
 magiclamp:
   threads: 36
 
+# EGGNOG
+# https://github.com/eggnogdb/eggnog-mapper
+eggnog:
+  db: "/hdd0/susbus/databases/eggnog" ###USER INPUT REQUIRED###
+  threads: 16
+  final_threads: 24
+  itype: "metagenome"
+  genepred: "prodigal"
+  split:
+    length: 2000000
+    suffix: 3
+
+
 # BINNING
 filter_length:
     threads: 4
