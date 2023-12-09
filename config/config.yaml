@@ -115,7 +115,7 @@ eggnog:
   db: "/hdd0/susbus/databases/eggnog" ###USER INPUT REQUIRED###
   threads: 16
   final_threads: 24
-  itype: "metagenome"
+  itype: "proteins"  # chose 'metagenome' if prediction is used
   genepred: "prodigal"
   split:
     length: 2000000

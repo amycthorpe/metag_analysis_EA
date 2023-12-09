@@ -58,8 +58,8 @@ rule emapper:
     message:
         "Running EggNog-mapper on {wildcards.sid}"
     shell:
-        "(date && mkdir -p {output} && "
-        "emapper.py -m diamond --data_dir {params.db} --itype {params.itype} --no_file_comments --cpu {threads} -i {input} -o {wildcards.sid} --output_dir $(dirname {output}) && "
+        "(date && mkdir -p $(dirname {output}) && "
+        "emapper.py -m diamond --data_dir {params.db} --itype {params.itype} --no_file_comments --cpu {threads} -i {input.fasta} -o {wildcards.sid} --output_dir $(dirname {output}) && "
         "date) &> >(tee {log})"
 
 # Final annotations
