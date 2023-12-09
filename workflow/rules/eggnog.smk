@@ -11,7 +11,7 @@ Purpose: To run eggnog on proteins
 ############################################
 rule eggnog:
     input:
-        expand(os.path.join(RESULTS_DIR, "eggnog/{sid}/{sid}.emapper.annotations""), sid=SAMPLES.index)
+        expand(os.path.join(RESULTS_DIR, "eggnog/{sid}/{sid}.emapper.annotations"), sid=SAMPLES.index)
     output:
         touch("status/eggnog.done")
 
@@ -59,7 +59,7 @@ rule emapper:
         "Running EggNog-mapper on {wildcards.sid}"
     shell:
         "(date && mkdir -p {output} && "
-        "emapper.py -m diamond --data_dir {params.db} --itype {params.itype} --no_file_comments --cpu {threads} -i {input} -o {wildcards.sid} --output_dir $(dirname {output}) &&"
+        "emapper.py -m diamond --data_dir {params.db} --itype {params.itype} --no_file_comments --cpu {threads} -i {input} -o {wildcards.sid} --output_dir $(dirname {output}) && "
         "date) &> >(tee {log})"
 
 # Final annotations
