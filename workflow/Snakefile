@@ -135,6 +135,12 @@ if "functions" in STEPS:
         "status/eggnog.done"
     ]
 
+if "seed" in STEPS:
+    include:
+        "rules/seed.smk"
+    TARGETS += [
+        "status/seed.done"
+    ]
 
 # No targets
 if len(TARGETS) == 0:
