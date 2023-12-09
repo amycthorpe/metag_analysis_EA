@@ -2,7 +2,7 @@
 # STEPS
 
 # Steps to be done
-steps: ["preprocessing", "taxonomy", "assembly", "contig_taxonomy", "kaiju", "annotation", "functions", "coverage"] #, "binning"] #TODO: "eukaryotes", "coassembly"
+steps: ["preprocessing", "taxonomy", "assembly", "contig_taxonomy", "kaiju", "annotation", "functions", "coverage"] #, "seed", "binning"] #TODO: "eukaryotes", "coassembly"
 
 
 ############################################################
@@ -121,6 +121,13 @@ eggnog:
     length: 2000000
     suffix: 3
 
+# SEED
+# https://github.com/transcript/samsa2
+seed:
+  db: "/raid1/scratch/MEGshared/MG_packages/samsa2/full_databases"
+  dmnd_db: "/raid1/scratch/MEGshared/MG_packages/samsa2/full_databases/subsys_db.dmnd"
+  fa_db: "/raid1/scratch/MEGshared/MG_packages/samsa2/full_databases/subsys_db.fa"
+  threads: 24
 
 # BINNING
 filter_length:
