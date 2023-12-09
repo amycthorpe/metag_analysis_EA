@@ -40,7 +40,7 @@ rule filter_length:
     shell:
         "(date && seqkit seq -j {threads} -o {output} -m 1499 {input} && date) &> >(tee {log})"
 
-rule mapping_index:
+rule bin_mapping_index:
     input:
         rules.filter_length.output
     output:
@@ -60,7 +60,7 @@ rule filter_mapping:
         read1=os.path.join(RESULTS_DIR, "preprocessed/reads/{sid_2}/{sid_2}_filtered.R1.fq"),
         read2=os.path.join(RESULTS_DIR, "preprocessed/reads/{sid_2}/{sid_2}_filtered.R2.fq"),
         cont=rules.filter_length.output,
-        idx=rules.mapping_index.output
+        idx=rules.bin_mapping_index.output
     output:
         temp(os.path.join(RESULTS_DIR,"bam/{sid}/{sid}_{sid_2}.bam"))
     threads:

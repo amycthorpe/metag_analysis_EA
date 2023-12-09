@@ -2,7 +2,7 @@
 # STEPS
 
 # Steps to be done
-steps: ["preprocessing", "taxonomy", "assembly", "contig_taxonomy", "kaiju", "annotation"] #, "binning", "coverage", "functions"] #TODO: "eukaryotes", "coassembly"
+steps: ["preprocessing", "taxonomy", "assembly", "contig_taxonomy", "kaiju", "annotation", "functions", "coverage", "binning"] #TODO: "eukaryotes", "coassembly"
 
 
 ############################################################
@@ -47,7 +47,7 @@ kraken2:
   threads: 12
   read: 150
   level: "S" # https://github.com/jenniferlu717/Bracken/issues/117
-  contig_level: "P" # set to phylum since many samples were unclassified at the Species, Genus, Family and Order levels
+  contig_level: "S" # set to phylum since many samples were unclassified at the Species, Genus, Family and Order levels
 
 # KAIJU
 kaiju:
@@ -132,7 +132,7 @@ metabinner:
 dasTool:
     threads: 14
 
-checkM:
+checkm:
     threads: 14
 
 drep:

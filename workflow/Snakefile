@@ -108,12 +108,12 @@ if "binning" in STEPS:
     include:
         "rules/dereplicate.smk"
     include:
-        "rules/bin_taxqual.done"
+        "rules/bin_taxqual.smk"
     TARGETS += [
         "status/bin_prep.done", 
         "status/binning.done", 
         "status/dereplicate.done",
-        "status/taxqual.done"
+        "status/bin_taxqual.done"
     ]
 
 # Coverage

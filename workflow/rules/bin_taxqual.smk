@@ -14,7 +14,7 @@ rule taxqual:
         os.path.join(RESULTS_DIR, "bins/gtdbtk_final"),
         os.path.join(RESULTS_DIR, "bins/checkm_final")        
     output:
-        touch("status/taxqual.done")
+        touch("status/bin_taxqual.done")
 
 
 ############################################
@@ -39,7 +39,7 @@ rule gtdbtk:
     message:
         "Running GTDB on MAGs"
     shell:
-        "(date && @
+        "(date && "
         "export GTDBTK_DATA_PATH={params} && gtdbtk classify_wf --cpus {threads} -x fa --genome_dir {input} --out_dir {output} && "
         "date) &> >(tee {log})"
 
@@ -55,7 +55,7 @@ rule checkm_final:
         out=os.path.join(RESULTS_DIR, "logs/checkm_final/checkm.out.log"),
         err=os.path.join(RESULTS_DIR, "logs/checkm_final/checkm.err.log")
     threads:
-        config["checkM"]["threads"]
+        config["checkm"]["threads"]
     message:
         "Running Final Checkm on dereplicated output"
     shell:

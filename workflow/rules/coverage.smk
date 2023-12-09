@@ -11,9 +11,9 @@ Purpose: To estimate contig and gene coverage
 ############################################
 rule coverage:
     input:
-        expand(os.path.join(RESULTS_DIR, "coverage/{sid}/{sid}_depth.txt"), sid=SAMPLES),
-        expand(os.path.join(RESULTS_DIR, "coverage/{sid}/{sid}.gene.len"), sid=SAMPLES),
-        expand(os.path.join(RESULTS_DIR, "coverage/{sid}/{sid}_gene_coverage.txt"), sid=SAMPLES)
+        expand(os.path.join(RESULTS_DIR, "coverage/{sid}/{sid}_depth.txt"), sid=SAMPLES.index),
+        expand(os.path.join(RESULTS_DIR, "coverage/{sid}/{sid}.gene.len"), sid=SAMPLES.index),
+        expand(os.path.join(RESULTS_DIR, "coverage/{sid}/{sid}_gene_coverage.txt"), sid=SAMPLES.index)
     output:
         touch("status/coverage.done")
 

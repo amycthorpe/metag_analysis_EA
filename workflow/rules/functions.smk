@@ -11,7 +11,7 @@ Purpose: To run MagicLamp and Lithogenies on contigs
 ############################################
 rule functions:
     input:
-        expand(os.path.join(RESULTS_DIR, "magiclamp/{sid}/lithogenie_output"), sid=SAMPLES)
+        expand(os.path.join(RESULTS_DIR, "magiclamp/{sid}/lithogenie_output"), sid=SAMPLES.index)
     output:
         touch("status/functions.done")
 
