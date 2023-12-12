@@ -41,7 +41,7 @@ rule seed_diamond:
     message:
         "Running SEED-mapper on {wildcards.sid}"
     shell:
-        "(date && mkdir -p $(dirname {output}) && "
+        "(date && mkdir -p $(dirname {output}) && mkdir -p {params.tmpdir} && "
         "diamond blastx --db {params.dmnd_db} -q {input.fasta} -a {output.daa} -t {params.tmpdir} -k 1 --threads {threads} && "
         "diamond view --daa {output.daa} -o {output.tsv} -f tab --threads {threads} && "
         "date) &> >(tee {log})"
@@ -92,7 +92,7 @@ rule concatenate_abundance:
     output:
         os.path.join(RESULTS_DIR, "seed/allsamples_anno_concatenated.tsv")
     params:
-        counts=os.path.join(RESULTS_DIR, "seed/{sid}/{sid}.seed.reduced_counts.tsv")
+        counts=expand(os.path.join(RESULTS_DIR, "seed/{sid}/{sid}.seed.reduced_counts.tsv"), sid=SAMPLES.index)
     log:
         os.path.join(RESULTS_DIR, "logs/seed/concatenating_allsamples.log")
     message:
@@ -144,6 +144,8 @@ rule matrify:
         rules.concatenate_abundance.output[0]
     output:
         os.path.join(RESULTS_DIR, "seed/abundance_tab.csv")
+    log:
+        os.path.join(RESULTS_DIR, "seed/matrify.log")
     message:
         "Converting concatenated SEED abundances to a matrix"
     run:
