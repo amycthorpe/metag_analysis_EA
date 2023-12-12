@@ -145,7 +145,7 @@ rule matrify:
     output:
         os.path.join(RESULTS_DIR, "seed/abundance_tab.csv")
     log:
-        os.path.join(RESULTS_DIR, "seed/matrify.log")
+        os.path.join(RESULTS_DIR, "logs/seed/matrify.log")
     message:
         "Converting concatenated SEED abundances to a matrix"
     run:

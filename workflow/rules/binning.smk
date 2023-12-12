@@ -30,7 +30,7 @@ rule metabat2_mapping:
     output:
         os.path.join(RESULTS_DIR,"bins/{sid}/{sid}_metabat_cov.txt")
     conda:
-        os.path.join(ENV_DIR, "metabat.yaml")
+        os.path.join(ENV_DIR, "metabat2.yaml")
     threads:
         config["metabat2"]["threads"]
     log:
@@ -49,7 +49,7 @@ rule metabat2:
     output:
         directory(os.path.join(RESULTS_DIR,"bins/{sid}/metabat/"))
     conda:
-        os.path.join(ENV_DIR, "metabat.yaml")
+        os.path.join(ENV_DIR, "metabat2.yaml")
     threads:
         config["metabat2"]["threads"]
     log:
