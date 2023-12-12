@@ -158,7 +158,7 @@ rule matrify:
         all_anno_concatenated = pd.read_csv(input[0], sep='\t', quoting=3, names=column_names, header=None)
 
         # Assuming that 'sample_name', 'gene', and 'no_reads, i.e. number of reads' columns exist in the DataFrame
-        abundance_tab = all_anno_concatenated.pivot(index='sample_name', columns='gene', values='no_reads')
+        abundance_tab = all_anno_concatenated.pivot(index='sample_name', columns='gene', values='no_read')
 
         # Write the DataFrame to a CSV file
         abundance_tab.to_csv(output[0], index=True)
