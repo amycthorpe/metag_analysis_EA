@@ -1,3 +1,6 @@
 [submodule "submodules/MagicLamp"]
 	path = submodules/MagicLamp
 	url = https://github.com/Arkadiy-Garber/MagicLamp
+[submodule "submodules/checkm2"]
+	path = submodules/checkm2
+	url = https://github.com/chklovski/CheckM2
