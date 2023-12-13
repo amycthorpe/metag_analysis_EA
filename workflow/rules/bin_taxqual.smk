@@ -12,7 +12,7 @@ Purpose: Taxonomy and quality of bins
 rule taxqual:
     input:
         os.path.join(RESULTS_DIR, "bins/gtdbtk_final"),
-        os.path.join(RESULTS_DIR, "bins/checkm_final")        
+        os.path.join(RESULTS_DIR, "bins/checkm2/quality_report.tsv")      
     output:
         touch("status/bin_taxqual.done")
 
@@ -43,23 +43,41 @@ rule gtdbtk:
         "export GTDBTK_DATA_PATH={params} && gtdbtk classify_wf --cpus {threads} -x fa --genome_dir {input} --out_dir {output} && "
         "date) &> >(tee {log})"
 
+# install checkm database
+rule checkm_db:
+    output:
+        os.path.join(DB_DIR, "CheckM2_database/uniref100.KO.1.dmnd")
+    log:
+        os.path.join(RESULTS_DIR, "logs/checkm2_db.log")
+    conda:
+        os.path.join(ENV_DIR, "checkm.yaml")
+    message:
+        "Downloading the checkm2 database"
+    shell:
+        "(date && checkm2 database --download --path $(dirname $(dirname {output})) && date) &> >(tee {log})"
+   
 # Checking bin quality
 rule checkm_final:
     input:
-        rules.drep.output.final
+        drep=rules.drep.output.final,
+        db=rules.checkm_db.output[0]
     output:
-        directory(os.path.join(RESULTS_DIR, "bins/checkm_final"))
+        os.path.join(RESULTS_DIR, "bins/checkm2/quality_report.tsv")
     conda:
         os.path.join(ENV_DIR, "checkm.yaml")
     log:
-        out=os.path.join(RESULTS_DIR, "logs/checkm_final/checkm.out.log"),
-        err=os.path.join(RESULTS_DIR, "logs/checkm_final/checkm.err.log")
+        os.path.join(RESULTS_DIR, "logs/checkm/checkm.out.log")
     threads:
         config["checkm"]["threads"]
+    params:
+        ext=config["checkm2"]["extension"],
+        db=os.path.join(DB_DIR, "CheckM2_database/uniref100.KO.1.dmnd"),
+        checkm2=os.path.join(SUBMODULES, "bin/checkm2")
     message:
         "Running Final Checkm on dereplicated output"
     shell:
         "(date && "
-        "checkm lineage_wf -t {threads} -f {output}.tsv --tab_table -x fa {input} {output} && "
-        "date) 2> {log.err} > {log.out}"
-
+        "export CHECKM2DB={params.db} && "
+        "{params.checkm2} predict --threads {threads} -x {params.ext} --input {input} --output-directory $(dirname {output.tsv}) --force && "
+        "checkm lineage_wf -t {threads} -f {output}.tsv --tab_table -x fa {input.drep} {output} && "
+        "date) &> > (tee {log}"

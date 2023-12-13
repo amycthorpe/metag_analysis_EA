@@ -131,35 +131,37 @@ seed:
 
 # BINNING
 filter_length:
-    threads: 4
+  threads: 4
     
 mdmcleaner:
-    threads: 7
+  threads: 7
 
 mapping:
-    threads: 7
+  threads: 7
 
 metabat2:
-    threads: 14
+  threads: 14
 
 concoct:
-    threads: 14
+  threads: 14
 
 metabinner:
-    length: 2000
-    threads: 14
+  length: 2000
+  threads: 14
 
 dasTool:
-    threads: 14
+  threads: 14
 
 checkm:
-    threads: 14
+  threads: 14
+  extension: "fa"
+  git_path: "https://github.com/chklovski/CheckM2"
 
 drep:
-    threads: 28
-    comp: 70
-    cont: 10
+  threads: 28
+  comp: 70
+  cont: 10
 
 gtdbtk:
-    threads: 14
-    path: "/scratch/users/gmichoud/DB/release207_v2"
+  threads: 14
+  path: "/scratch/users/gmichoud/DB/release207_v2"
