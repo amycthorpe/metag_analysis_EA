@@ -50,7 +50,8 @@ rule checkm_db:
     log:
         os.path.join(RESULTS_DIR, "logs/checkm2_db.log")
     conda:
-        os.path.join(ENV_DIR, "checkm.yaml")
+        "checkm2"
+#        os.path.join(ENV_DIR, "checkm.yaml")
     message:
         "Downloading the checkm2 database"
     shell:
@@ -64,7 +65,8 @@ rule checkm_final:
     output:
         os.path.join(RESULTS_DIR, "bins/checkm2/quality_report.tsv")
     conda:
-        os.path.join(ENV_DIR, "checkm.yaml")
+        "checkm2"
+#        os.path.join(ENV_DIR, "checkm.yaml")
     log:
         os.path.join(RESULTS_DIR, "logs/checkm/checkm.out.log")
     threads:
