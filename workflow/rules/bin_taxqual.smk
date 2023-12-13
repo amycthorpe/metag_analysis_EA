@@ -70,7 +70,7 @@ rule checkm_final:
     threads:
         config["checkm"]["threads"]
     params:
-        ext=config["checkm2"]["extension"],
+        ext=config["checkm"]["extension"],
         db=os.path.join(DB_DIR, "CheckM2_database/uniref100.KO.1.dmnd"),
         checkm2=os.path.join(SUBMODULES, "checkm2/bin/checkm2")
     message:
