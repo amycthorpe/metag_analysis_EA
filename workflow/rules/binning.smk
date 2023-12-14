@@ -137,7 +137,7 @@ rule metabinner_prepare:
         contig=rules.filter_length.output,
         bin=rules.metabinner_install.output.dbs
     output:
-        cont_t=temp(RESULTS_DIR + "/assembly" + "/{sid}_filter_" + str(config["metabinner"]["length"]) + ".fa"),        
+        cont_t=temp(RESULTS_DIR + "/assembly" + "/{sid}/{sid}_filter_" + str(config["metabinner"]["length"]) + ".fa"),        
         cont=RESULTS_DIR + "/bins/{sid}/{sid}_metabinner_" + str(config["metabinner"]["length"]) +".fa",        
         kmer_t=temp(RESULTS_DIR + "/assembly" + "/{sid}_filter_kmer_4_f" + str(config["metabinner"]["length"]) + ".csv"),
         kmer=RESULTS_DIR + "/bins/{sid}/{sid}_kmer_4_f" + str(config["metabinner"]["length"]) + ".csv"
