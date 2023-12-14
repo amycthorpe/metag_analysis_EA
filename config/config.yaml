@@ -134,10 +134,10 @@ filter_length:
   threads: 4
     
 mdmcleaner:
-  threads: 7
+  threads: 16
 
 mapping:
-  threads: 7
+  threads: 24
 
 metabat2:
   threads: 14
@@ -150,18 +150,18 @@ metabinner:
   threads: 14
 
 dasTool:
-  threads: 14
+  threads: 48
 
 checkm:
-  threads: 14
+  threads: 64
   extension: "fa"
   git_path: "https://github.com/chklovski/CheckM2"
 
 drep:
   threads: 28
   comp: 70
-  cont: 10
+  cont: 16
 
 gtdbtk:
-  threads: 14
+  threads: 64
   path: "/scratch/users/gmichoud/DB/release207_v2"
