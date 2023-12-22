@@ -2,7 +2,7 @@
 # STEPS
 
 # Steps to be done
-steps: ["preprocessing", "taxonomy", "assembly", "contig_taxonomy", "kaiju", "annotation", "functions", "coverage", "seed", "binning"] #TODO: "eukaryotes", "coassembly"
+steps: ["preprocessing", "taxonomy", "assembly", "contig_taxonomy", "kaiju", "annotation", "functions", "coverage", "seed", "cluster"] #,"binning"] #TODO: "eukaryotes", "coassembly"
 
 
 ############################################################
@@ -128,6 +128,13 @@ seed:
   dmnd_db: "/raid1/scratch/MEGshared/MG_packages/samsa2/full_databases/subsys_db.dmnd"
   fa_db: "/raid1/scratch/MEGshared/MG_packages/samsa2/full_databases/subsys_db.fa"
   threads: 24
+
+# CLUSTERING
+mmseqs2:
+  threads: 72
+  cov: 0.8
+  min_id: 0.5 # use 0.3 for proteins and 0.5 for DNA
+  cov_mode: 1 # use 0 for proteins
 
 # BINNING
 filter_length:

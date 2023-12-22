@@ -99,6 +99,14 @@ if "eukaryotes" in STEPS:
         "status/eukaryotes.done"
     ]
 
+# Clustering
+if "cluster" in STEPS:
+    include:
+        "rules/cluster.smk"
+    TARGETS += [
+        "status/cluster.done"
+    ]
+
 # Binning
 if "binning" in STEPS:
     include:
