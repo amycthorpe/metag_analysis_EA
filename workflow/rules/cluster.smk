@@ -53,7 +53,7 @@ rule cat_mmseqs2:
         min_id=config["mmseqs2"]["min_id"]
     shell:
         "(date && "
-        "mmseqs easy-cluster --threads {threads} --force-reuse 0 --cov-mode {params.cov_mode} --min-seq-id {params.min_id} -c {params.cov} {input} $(echo $(basename {output} | sed 's,_rep_seq.fasta,,g')) {params.tmp} && "
+        "mmseqs easy-cluster --threads {threads} --force-reuse 0 --cov-mode {params.cov_mode} --min-seq-id {params.min_id} -c {params.cov} {input} $(echo {output} | sed 's,_rep_seq.fasta,,g') {params.tmp} && "
         "date) &> >(tee {log})"
 
 rule cat_filter_length:
