@@ -11,7 +11,8 @@ Purpose: To prepare a concatenated assembly for binning
 ############################################
 rule bin_prep:
     input:
-        expand(os.path.join(RESULTS_DIR, "assembly/cat_assembly_filter.fasta.sa"), sid=SAMPLES.index)
+        expand(os.path.join(RESULTS_DIR, "assembly/cat_assembly_filter.fasta.sa"), sid=SAMPLES.index),
+        expand(os.path.join(RESULTS_DIR,"bam/{sid}/cat_assembly_{sid}.bam"), sid=SAMPLES.index)
     output:
         touch("status/cluster.done")
 
@@ -92,7 +93,7 @@ rule filter_mapping:
         cont=rules.cat_filter_length.output,
         idx=rules.cat_bin_mapping_index.output
     output:
-        temp(os.path.join(RESULTS_DIR,"bam/{sid}/cat_assembly_{sid}.bam"))
+        os.path.join(RESULTS_DIR,"bam/{sid}/cat_assembly_{sid}.bam")
     threads:
         config["mapping"]["threads"]
     conda:

@@ -11,9 +11,9 @@ Purpose: To prepare assemblies for binning
 ############################################
 rule binning:
     input:
-        expand(os.path.join(RESULTS_DIR,"bins/{sid}/metabat/"), sid=SAMPLES.index),
-        expand(os.path.join(RESULTS_DIR,"bins/{sid}/{sid}_metabinner_cov.txt"), sid=SAMPLES.index),
-        expand(os.path.join(RESULTS_DIR,"bins/{sid}/{sid}_concoct_cov.txt"), sid=SAMPLES.index)
+        os.path.join(RESULTS_DIR,"bins/metabat"),
+        os.path.join(RESULTS_DIR,"bins/metabinner_cov.txt"),
+        os.path.join(RESULTS_DIR,"bins/concoct_cov.txt")
     output:
         touch("status/binning.done")
 
@@ -26,16 +26,16 @@ rule binning:
 # Setting up files for binning 
 rule metabat2_mapping:
     input:
-        expand(os.path.join(RESULTS_DIR,"bam/{{sid}}/{{sid}}_{sid_2}.bam"), sid_2 = SAMPLES.index)
+        expand(os.path.join(RESULTS_DIR,"bam/{sid}/cat_assembly_{sid}.bam"), sid=SAMPLES.index)
     output:
-        os.path.join(RESULTS_DIR,"bins/{sid}/{sid}_metabat_cov.txt")
+        os.path.join(RESULTS_DIR,"bins/cat_assembly_metabat_cov.txt")
     conda:
         os.path.join(ENV_DIR, "metabat2.yaml")
     threads:
         config["metabat2"]["threads"]
     log:
-        out=os.path.join(RESULTS_DIR, "logs/metabat_mapping/{sid}.out.log"),
-        err=os.path.join(RESULTS_DIR, "logs/metabat_mapping/{sid}.err.log")
+        out=os.path.join(RESULTS_DIR, "logs/metabat_mapping.out.log"),
+        err=os.path.join(RESULTS_DIR, "logs/metabat_mapping.err.log")
     message:
         "Running the first part of metabat2 to estimate the coverage"
     shell:
@@ -44,19 +44,19 @@ rule metabat2_mapping:
 
 rule metabat2:
     input:
-        contig=rules.filter_length.output,
+        contig=rules.cat_filter_length.output,
         cov=rules.metabat2_mapping.output
     output:
-        directory(os.path.join(RESULTS_DIR,"bins/{sid}/metabat/"))
+        directory(os.path.join(RESULTS_DIR,"bins/metabat/"))
     conda:
         os.path.join(ENV_DIR, "metabat2.yaml")
     threads:
         config["metabat2"]["threads"]
     log:
-        out=os.path.join(RESULTS_DIR, "logs/metabat2/{sid}.out.log"),
-        err=os.path.join(RESULTS_DIR, "logs/metabat2/{sid}.err.log")
+        out=os.path.join(RESULTS_DIR, "logs/metabat2.out.log"),
+        err=os.path.join(RESULTS_DIR, "logs/metabat2.err.log")
     message:
-        "Running metabat2 to obtain bins for {wildcards.sid}"
+        "Running metabat2 to obtain bins"
     shell:
         "(date && metabat2 -i {input.contig} -a {input.cov} -o {output}/metabat -t {threads} && "
         "date) 2> {log.err} > {log.out}"
@@ -64,16 +64,16 @@ rule metabat2:
 rule concoct_prepare:
     input:
         contig=rules.filter_length.output,
-        bam=expand(os.path.join(RESULTS_DIR,"bam/{{sid}}/{{sid}}_{sid_2}.bam"), sid_2 = SAMPLES.index)
+        bam=expand(os.path.join(RESULTS_DIR,"bam/{sid}/cat_assembly_{sid}.bam"), sid=SAMPLES.index)
     output:
-        bed=os.path.join(RESULTS_DIR,"bins/{sid}/{sid}_10k.bed"),
-        cont=os.path.join(RESULTS_DIR,"bins/{sid}/{sid}_10k.fa"),
-        cov=os.path.join(RESULTS_DIR,"bins/{sid}/{sid}_concoct_cov.txt")
+        bed=os.path.join(RESULTS_DIR,"bins/cat_assembly_10k.bed"),
+        cont=os.path.join(RESULTS_DIR,"bins/cat_assembly_10k.fa"),
+        cov=os.path.join(RESULTS_DIR,"bins/cat_assembly_concoct_cov.txt")
     conda:
         os.path.join(ENV_DIR, "concoct.yaml")
     log:
-        out=os.path.join(RESULTS_DIR, "logs/concoct_prepare/{sid}.out.log"),
-        err=os.path.join(RESULTS_DIR, "logs/concoct_prepare/{sid}.err.log")
+        out=os.path.join(RESULTS_DIR, "logs/concoct_prepare.out.log"),
+        err=os.path.join(RESULTS_DIR, "logs/concoct_prepare.err.log")
     message:
         "Preparing files for Concoct"
     shell:
@@ -86,14 +86,14 @@ rule concoct:
         contig=rules.concoct_prepare.output.cont,
         cov=rules.concoct_prepare.output.cov
     output:
-        os.path.join(RESULTS_DIR,"bins/{sid}/concoct/concoct_clustering_merged.csv")
+        os.path.join(RESULTS_DIR,"bins/concoct/concoct_clustering_merged.csv")
     conda:
         os.path.join(ENV_DIR, "concoct.yaml")
     threads:
         config["concoct"]["threads"]
     log:
-        out=os.path.join(RESULTS_DIR, "logs/concoct/{sid}.out.log"),
-        err=os.path.join(RESULTS_DIR, "logs/concoct/{sid}.err.log")
+        out=os.path.join(RESULTS_DIR, "logs/concoct.out.log"),
+        err=os.path.join(RESULTS_DIR, "logs/concoct.err.log")
     message:
         "Running concoct to obtain bins"
     shell:
@@ -112,17 +112,17 @@ rule metabinner_install:
 
 rule metabinner_coverage:
     input:
-        expand(os.path.join(RESULTS_DIR,"bam/{{sid}}/{{sid}}_{sid_2}.bam"), sid_2 = SAMPLES.index)
+        expand(os.path.join(RESULTS_DIR,"bam/{sid}/cat_assembly_{sid}.bam"), sid=SAMPLES.index)
     output:
-        temp=temp(os.path.join(RESULTS_DIR,"bins/{sid}/{sid}_metabinner_temp.txt")),
-        final=os.path.join(RESULTS_DIR,"bins/{sid}/{sid}_metabinner_cov.txt")
+        temp=temp(os.path.join(RESULTS_DIR,"bins/metabinner_temp.txt")),
+        final=os.path.join(RESULTS_DIR,"bins/metabinner_cov.txt")
     conda:
         os.path.join(ENV_DIR, "metabat.yaml")
     threads:
         config["metabinner"]["threads"]
     log:
-        out=os.path.join(RESULTS_DIR, "logs/metabinner_mapping/{sid}.out.log"),
-        err=os.path.join(RESULTS_DIR, "logs/metabinner_mapping/{sid}.err.log")
+        out=os.path.join(RESULTS_DIR, "logs/metabinner_mapping.out.log"),
+        err=os.path.join(RESULTS_DIR, "logs/metabinner_mapping.err.log")
     message:
         "Running the first part of metabinner to estimate the coverage"
     shell:
@@ -131,10 +131,9 @@ rule metabinner_coverage:
         cat {output.temp} | awk '{{if ($2>{config[metabinner][length]}) print $0 }}' | cut -f -1,4- > {output.final} && 
         date) 2> {log.err} > {log.out}
         """
-
 rule metabinner_prepare:
     input:
-        contig=rules.filter_length.output,
+        contig=rules.cat_filter_length.output,
         bin=rules.metabinner_install.output.dbs
     output:
         cont_t=temp(RESULTS_DIR + "/assembly" + "/{sid}/{sid}_filter_" + str(config["metabinner"]["length"]) + ".fa"),        
@@ -161,12 +160,12 @@ rule metabinner:
         kmer=rules.metabinner_prepare.output.kmer,    
         path=rules.metabinner_install.output.dbs
     output:
-        os.path.join(RESULTS_DIR, "bins/{sid}/Metabinner/metabinner_result.tsv")
+        os.path.join(RESULTS_DIR, "bins/Metabinner/metabinner_result.tsv")
     conda:
         os.path.join(ENV_DIR, "metabinner.yaml")
     log:
-        out=os.path.join(RESULTS_DIR, "logs/metabinner/{sid}.out.log"),
-        err=os.path.join(RESULTS_DIR, "logs/metabinner/{sid}.err.log")
+        out=os.path.join(RESULTS_DIR, "logs/metabinner.out.log"),
+        err=os.path.join(RESULTS_DIR, "logs/metabinner.err.log")
     threads:
         config["metabinner"]["threads"]
     message:

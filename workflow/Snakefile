@@ -110,7 +110,7 @@ if "cluster" in STEPS:
 # Binning
 if "binning" in STEPS:
     include:
-        "rules/bin_prep.smk"
+        "rules/cluster.smk"
     include:
         "rules/binning.smk"
     include:
@@ -118,7 +118,7 @@ if "binning" in STEPS:
     include:
         "rules/bin_taxqual.smk"
     TARGETS += [
-        "status/bin_prep.done", 
+        "status/cluster.done", 
         "status/binning.done", 
         "status/dereplicate.done",
         "status/bin_taxqual.done"
