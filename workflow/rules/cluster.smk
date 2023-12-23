@@ -22,10 +22,25 @@ rule bin_prep:
 
 
 ############################################
-# Clustering the assemblies for binning 
+# Adding filename to assemblies for easy tracking
+rule modify_fasta:
+    input:
+        os.path.join(RESULTS_DIR, "assembly/{sid}/{sid}.fasta")
+    output:
+        os.path.join(RESULTS_DIR, "assembly/{sid}/{sid}_modified.fasta")
+    log:
+        os.path.join(RESULTS_DIR, "logs/modify_fasta/{sid}.log")
+    message:
+        "Adding filename to fasta headers: {wildcards.sid}"
+    shell:
+        "(date && filename={wildcards.sid} && "
+        """awk -v filename="$filename" '/^>/ {{ print $1"_"filename; next }} 1' {input} > {output} && """
+        "date) &> >(tee {log})"
+
+# Concatetnating the assemblies for binning 
 rule ass_cat:
     input:
-        expand(os.path.join(RESULTS_DIR, "assembly/{sid}/{sid}.fasta"), sid=SAMPLES.index)
+        expand(os.path.join(RESULTS_DIR, "assembly/{sid}/{sid}_modified.fasta"), sid=SAMPLES.index)
     output:
         os.path.join(RESULTS_DIR, "assembly/cat_assembly.fasta")
     log:
@@ -35,6 +50,7 @@ rule ass_cat:
     shell:
         "(date && cat {input} > {output} && date) &> >(tee {log})"
 
+# Clustering the assemblies for binning
 rule cat_mmseqs2:
     input:
         rules.ass_cat.output
