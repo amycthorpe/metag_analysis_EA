@@ -120,7 +120,7 @@ rule filter_mapping:
     wildcard_constraints:
         sid="|".join(SAMPLES.index)
     message:
-        "Running bwa to produce sorted bams"
+        "Running bwa to produce sorted bams: {wildcards.sid}"
     shell:
         "(date && bwa mem -t {threads} {input.cont} {input.read1} {input.read2} | samtools sort -@{threads} -o {output} - && " 
         "samtools index {output} && date) 2> {log.err} > {log.out}"
