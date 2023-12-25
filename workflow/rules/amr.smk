@@ -1,32 +1,67 @@
 """
 Author: Susheel Bhanu BUSI
 Affiliation: Molecular Ecology group, UKCEH
-Date: [2023-11-20]
-Run: snakemake -s workflow/rules/cluster.smk --use-conda --cores 4 -rp
+Date: [2023-12-25]
+Run: snakemake -s workflow/rules/amr.smk --use-conda --cores 64 -rp
 Latest modification:
-Purpose: To prepare a concatenated assembly for binning
+Purpose: To run AMR on concatenated assembly
 """
 
 
 ############################################
-rule bin_prep:
+rule amr:
     input:
-        expand(os.path.join(RESULTS_DIR, "assembly/cat_assembly_filter.fasta.sa"), sid=SAMPLES.index),
-        expand(os.path.join(RESULTS_DIR,"bam/{sid}/cat_assembly_{sid}.bam"), sid=SAMPLES.index)
+        os.path.join(RESULTS_DIR, "amr/rgi.txt")
     output:
-        touch("status/cluster.done")
+        touch("status/amr.done")
 
 
 ############################################
-# localrules: phyloseq_input_kraken2
+# localrules: 
 
 
 ############################################
-# Adding filename to assemblies for easy tracking
-rule modify_fasta:
-    input:
-        os.path.join(RESULTS_DIR, "assembly/{sid}/{sid}.fasta")
+# Download RGI data
+rule download_rgi_db:
     output:
+        archive=temp(os.path.join(DB_DIR, "rgi/card-data.tar.bz2")),
+        json=os.path.join(DB_DIR, "rgi/card.json")
+    log:
+        os.path.join(RESULTS_DIR, "logs/setup.rgi.db.log")
+    params:
+        db_url=config["rgi"]["db_url"]
+    message:
+        "Setup: download RGI data"
+    shell:
+        "(date && "
+        "wget -O {output.archive} {params.db_url} --no-check-certificate && "
+        "tar -C $(dirname {output.archive}) -xvf {output.archive} && "
+        "date) &> >(tee {log})"
+
+# Setup RGI: load required DB
+# NOTE: to make sure that the same DB is used for all targets
+rule setup_rgi_db:
+    input:
+        os.path.join(DB_DIR, "rgi/card.json")
+    output:
+        "status/rgi_setup.done"
+    log:
+        os.path.join(RESULTS_DIR, "logs/setup.rgi.setup.log")
+    conda:
+        os.path.join(ENV_DIR, "rgi.yaml")
+    message:
+        "Setup: load RGI DB"
+    shell:
+        "(date && rgi clean --local && "
+        "rgi load --card_json {input} --local && rgi database --version --local && "
+        "date) &> >(tee {log}) && touch {output}"
+
+
+
+
+
+
+
         os.path.join(RESULTS_DIR, "assembly/{sid}/{sid}_modified.fasta")
     log:
         os.path.join(RESULTS_DIR, "logs/modify_fasta/{sid}.log")

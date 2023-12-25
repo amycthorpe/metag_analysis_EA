@@ -9,7 +9,7 @@ Purpose: To prepare a concatenated assembly for binning
 
 
 ############################################
-rule bin_prep:
+rule cluster:
     input:
         expand(os.path.join(RESULTS_DIR, "assembly/cat_assembly_filter.fasta.sa"), sid=SAMPLES.index),
         expand(os.path.join(RESULTS_DIR,"bam/{sid}/cat_assembly_{sid}.bam"), sid=SAMPLES.index)
