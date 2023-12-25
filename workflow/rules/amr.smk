@@ -17,7 +17,7 @@ rule amr:
 
 
 ############################################
-# localrules: 
+localrules: download_rgi_db, setup_rgi_db
 
 
 ############################################
@@ -46,7 +46,7 @@ rule setup_rgi_db:
     output:
         "status/rgi_setup.done"
     log:
-        os.path.join(RESULTS_DIR, "logs/setup.rgi.setup.log")
+        os.path.join(RESULTS_DIR, "logs/rgi.setup.log")
     conda:
         os.path.join(ENV_DIR, "rgi.yaml")
     message:
@@ -56,106 +56,28 @@ rule setup_rgi_db:
         "rgi load --card_json {input} --local && rgi database --version --local && "
         "date) &> >(tee {log}) && touch {output}"
 
-
-
-
-
-
-
-        os.path.join(RESULTS_DIR, "assembly/{sid}/{sid}_modified.fasta")
-    log:
-        os.path.join(RESULTS_DIR, "logs/modify_fasta/{sid}.log")
-    message:
-        "Adding filename to fasta headers: {wildcards.sid}"
-    shell:
-        "(date && filename={wildcards.sid} && "
-        """awk -v filename="$filename" '/^>/ {{ print $1"_"filename; next }} 1' {input} > {output} && """
-        "date) &> >(tee {log})"
-
-# Concatetnating the assemblies for binning 
-rule ass_cat:
+# Run RGI: Assembly (DNA)
+rule annotation_rgi:
     input:
-        expand(os.path.join(RESULTS_DIR, "assembly/{sid}/{sid}_modified.fasta"), sid=SAMPLES.index)
+        fna=os.path.join(RESULTS_DIR, "mmseqs/cat_assembly_rep_seq.fasta"),
+        db=os.path.join(DB_DIR, "rgi/card.json"),
+        setup="status/rgi_setup.done" # NOTE: to make sure that the same DB is used for all targets
     output:
-        os.path.join(RESULTS_DIR, "assembly/cat_assembly.fasta")
+        txt=os.path.join(RESULTS_DIR, "amr/rgi.txt")
     log:
-        os.path.join(RESULTS_DIR, "logs/assembly/concatenation.log")
-    message:
-        "Concatenating all assemblies"
-    shell:
-        "(date && cat {input} > {output} && date) &> >(tee {log})"
-
-# Clustering the assemblies for binning
-rule cat_mmseqs2:
-    input:
-        rules.ass_cat.output
-    output:
-        os.path.join(RESULTS_DIR, "mmseqs/cat_assembly_rep_seq.fasta")
-    log:
-        os.path.join(RESULTS_DIR, "logs/mmseqs_cluster.log")
-    conda:
-        os.path.join(ENV_DIR, "mmseqs2.yaml")
+        os.path.join(RESULTS_DIR, "logs/rgi.annotation.log")
     threads:
-        config["mmseqs2"]["threads"]
+        config["rgi"]["threads"]
     params:
-        tmp=os.path.join(RESULTS_DIR, "tmpdir"),
-        cov=config["mmseqs2"]["cov"],
-        cov_mode=config["mmseqs2"]["cov_mode"],
-        min_id=config["mmseqs2"]["min_id"]
+        alignment_tool="DIAMOND"
+    conda:
+        os.path.join(ENV_DIR, "rgi.yaml")
+    message:
+        "Annotation: RGI: mmseqs_rep_seq_DNA"
     shell:
         "(date && "
-        "mmseqs easy-cluster --threads {threads} --force-reuse 0 --cov-mode {params.cov_mode} --min-seq-id {params.min_id} -c {params.cov} {input} $(echo {output} | sed 's,_rep_seq.fasta,,g') {params.tmp} && "
+        "rgi database --version --local && "
+        # NOTE: https://github.com/arpcard/rgi/issues/93: KeyError: 'snp' --> re-run
+        "rgi main --input_sequence {input.fna} --output_file {output.txt} --local -a {params.alignment_tool} --clean --low_quality -n {threads} || "
+        "rgi main --input_sequence {input.fna} --output_file {output.txt} --local -a {params.alignment_tool} --clean --low_quality -n {threads} && "
         "date) &> >(tee {log})"
-
-rule cat_filter_length:
-    input:
-        rules.cat_mmseqs2.output
-    output:
-        os.path.join(RESULTS_DIR, "assembly/cat_assembly_filter.fasta")
-    conda:
-        os.path.join(ENV_DIR, "mapping.yaml")
-    threads:
-        config['filter_length']['threads']
-    log:
-        os.path.join(RESULTS_DIR, "logs/filter/length.log")
-    message:
-        "Removing contigs less than 1.5K"
-    shell:
-        "(date && seqkit seq -j {threads} -o {output} -m 1499 {input} && date) &> >(tee {log})"
-
-rule cat_bin_mapping_index:
-    input:
-        rules.cat_filter_length.output
-    output:
-        os.path.join(RESULTS_DIR,"assembly/cat_assembly_filter.fasta.sa")
-    log:
-        os.path.join(RESULTS_DIR, "logs/mapping/mapping.bwa.index.log")
-    conda:
-        os.path.join(ENV_DIR, "mapping.yaml")
-    message:
-        "Mapping: BWA index for assembly mapping"
-    shell:
-        "(date && bwa index {input} && date) &> >(tee {log})"    
-
-rule filter_mapping:
-    input:
-        read1=os.path.join(RESULTS_DIR, "preprocessed/reads/{sid}/{sid}_filtered.R1.fq"),
-        read2=os.path.join(RESULTS_DIR, "preprocessed/reads/{sid}/{sid}_filtered.R2.fq"),
-        cont=rules.cat_filter_length.output,
-        idx=rules.cat_bin_mapping_index.output
-    output:
-        os.path.join(RESULTS_DIR,"bam/{sid}/cat_assembly_{sid}.bam")
-    threads:
-        config["mapping"]["threads"]
-    conda:
-        os.path.join(ENV_DIR, "mapping.yaml")
-    log:
-        out=os.path.join(RESULTS_DIR, "logs/mapping/cat_assembly_{sid}.out.log"),
-        err=os.path.join(RESULTS_DIR, "logs/mapping/cat_assembly_{sid}.err.log")
-    wildcard_constraints:
-        sid="|".join(SAMPLES.index)
-    message:
-        "Running bwa to produce sorted bams: {wildcards.sid}"
-    shell:
-        "(date && bwa mem -t {threads} {input.cont} {input.read1} {input.read2} | samtools sort -@{threads} -o {output} - && " 
-        "samtools index {output} && date) 2> {log.err} > {log.out}"
