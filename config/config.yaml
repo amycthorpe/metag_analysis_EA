@@ -2,7 +2,7 @@
 # STEPS
 
 # Steps to be done
-steps: ["preprocessing", "taxonomy", "assembly", "contig_taxonomy", "kaiju", "annotation", "functions", "coverage", "seed", "cluster"] #,"binning"] #TODO: "amr", "eukaryotes", "coassembly"
+steps: ["preprocessing", "taxonomy", "assembly", "contig_taxonomy", "kaiju", "annotation", "functions", "coverage", "seed", "cluster", "amr"] #,"binning"] #TODO: "amr", "eukaryotes", "coassembly"
 
 
 ############################################################
