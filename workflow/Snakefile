@@ -91,6 +91,14 @@ if "annotation" in STEPS:
         "status/annotation.done"
     ]
 
+# AMR
+if "amr" in STEPS:
+    include:
+        "rules/amr.smk"
+    TARGETS += [
+        "status/amr.done"
+    ]
+
 # Eukaryotes
 if "eukaryotes" in STEPS:
     include:
