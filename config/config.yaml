@@ -136,6 +136,12 @@ mmseqs2:
   min_id: 0.5 # use 0.3 for proteins and 0.5 for DNA
   cov_mode: 1 # use 0 for proteins
 
+# AMR
+# https://github.com/arpcard/rgi
+rgi:
+  threads: 64
+  db_url: "https://card.mcmaster.ca/latest/data"
+
 # BINNING
 filter_length:
   threads: 4
