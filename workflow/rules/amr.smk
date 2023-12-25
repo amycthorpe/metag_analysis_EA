@@ -52,9 +52,11 @@ rule setup_rgi_db:
     message:
         "Setup: load RGI DB"
     shell:
-        "(date && rgi clean --local && "
-        "rgi load --card_json {input} --local && rgi database --version --local && "
-        "date) &> >(tee {log}) && touch {output}"
+        "(date && "
+        "rgi clean --local && "
+        "rgi load --card_json {input} --local && "
+        "rgi database --version --local && "
+        "touch {output} && date) &> >(tee {log})"
 
 # Run RGI: Assembly (DNA)
 rule annotation_rgi:
@@ -81,3 +83,4 @@ rule annotation_rgi:
         "rgi main --input_sequence {input.fna} --output_file {output.txt} --local -a {params.alignment_tool} --clean --low_quality -n {threads} || "
         "rgi main --input_sequence {input.fna} --output_file {output.txt} --local -a {params.alignment_tool} --clean --low_quality -n {threads} && "
         "date) &> >(tee {log})"
+
