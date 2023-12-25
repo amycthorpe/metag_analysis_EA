@@ -61,7 +61,7 @@ rule setup_rgi_db:
 # Run RGI: Assembly (DNA)
 rule annotation_rgi:
     input:
-        fna=os.path.join(RESULTS_DIR, "mmseqs/cat_assembly_rep_seq.fasta"),
+        fna=os.path.join(RESULTS_DIR, "assembly/cat_assembly_filter.fasta"),
         db=os.path.join(DB_DIR, "rgi/card.json"),
         setup="status/rgi_setup.done" # NOTE: to make sure that the same DB is used for all targets
     output:
