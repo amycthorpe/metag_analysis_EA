@@ -95,8 +95,8 @@ eukulele:
 
 # MAPPING
 bwa:
-  threads: 10
-  map_threads: 16
+  threads: 16
+  map_threads: 24
 
 # http://www.htslib.org/doc/samtools.html
 samtools:
@@ -147,23 +147,23 @@ filter_length:
   threads: 4
     
 mdmcleaner:
-  threads: 16
+  threads: 48
 
 mapping:
   threads: 24
 
 metabat2:
-  threads: 14
+  threads: 48
 
 concoct:
-  threads: 14
+  threads: 48
 
 metabinner:
   length: 2000
-  threads: 14
+  threads: 48
 
 dasTool:
-  threads: 48
+  threads: 64
 
 checkm:
   threads: 64
@@ -171,7 +171,7 @@ checkm:
   git_path: "https://github.com/chklovski/CheckM2"
 
 drep:
-  threads: 28
+  threads: 48
   comp: 70
   cont: 16
 
