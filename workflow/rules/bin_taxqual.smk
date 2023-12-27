@@ -63,7 +63,7 @@ rule checkm_final:
         drep=rules.drep.output.final,
         db=rules.checkm_db.output[0]
     output:
-        os.path.join(RESULTS_DIR, "bins/checkm2/quality_report.tsv")
+        tsv=os.path.join(RESULTS_DIR, "bins/checkm2/quality_report.tsv")
     conda:
         "checkm2"
 #        os.path.join(ENV_DIR, "checkm.yaml")

@@ -53,7 +53,7 @@ rule dasTool:
         metabat=rules.prepare_dasTool.output.metabatout,
         concoct=rules.prepare_dasTool.output.concoctout,
         metabinner=rules.prepare_dasTool.output.metabinnerout,
-        cont=rules.filter_length.output
+        cont=rules.cat_filter_length.output
     output:
         os.path.join(RESULTS_DIR, "bins/{sid}/dastool/das_DASTool_summary.tsv")
     conda:

@@ -80,7 +80,7 @@ rule annotation_rgi:
         "(date && "
         "rgi database --version --local && "
         # NOTE: https://github.com/arpcard/rgi/issues/93: KeyError: 'snp' --> re-run
-        "rgi main --input_sequence {input.fna} --output_file $(basename -s '.txt' {output}) --local -a {params.alignment_tool} --clean --low_quality -n {threads} || "
-        "rgi main --input_sequence {input.fna} --output_file $(basename -s '.txt' {output}) --local -a {params.alignment_tool} --clean --low_quality -n {threads} && "
+        "rgi main --input_sequence {input.fna} --output_file $(dirname {output})/$(basename -s '.txt' {output}) --local -a {params.alignment_tool} --clean --low_quality -n {threads} || "
+        "rgi main --input_sequence {input.fna} --output_file $(dirname {output})/$(basename -s '.txt' {output}) --local -a {params.alignment_tool} --clean --low_quality -n {threads} && "
         "date) &> >(tee {log})"
 

@@ -11,9 +11,9 @@ Purpose: To prepare assemblies for binning
 ############################################
 rule binning:
     input:
-        os.path.join(RESULTS_DIR,"bins/metabat"),
-        os.path.join(RESULTS_DIR,"bins/metabinner_cov.txt"),
-        os.path.join(RESULTS_DIR,"bins/concoct_cov.txt")
+        os.path.join(RESULTS_DIR, "bins/metabat"),
+        os.path.join(RESULTS_DIR, "bins/metabinner_cov.txt"),
+        os.path.join(RESULTS_DIR, "bins/concoct/concoct_clustering_merged.csv")
     output:
         touch("status/binning.done")
 
@@ -44,7 +44,7 @@ rule metabat2_mapping:
 
 rule metabat2:
     input:
-        contig=rules.cat_filter_length.output,
+        contig=os.path.join(RESULTS_DIR, "assembly/cat_assembly_filter.fasta"),
         cov=rules.metabat2_mapping.output
     output:
         directory(os.path.join(RESULTS_DIR,"bins/metabat/"))
@@ -63,7 +63,7 @@ rule metabat2:
 
 rule concoct_prepare:
     input:
-        contig=rules.filter_length.output,
+        contig=os.path.join(RESULTS_DIR, "assembly/cat_assembly_filter.fasta"),
         bam=expand(os.path.join(RESULTS_DIR,"bam/{sid}/cat_assembly_{sid}.bam"), sid=SAMPLES.index)
     output:
         bed=os.path.join(RESULTS_DIR,"bins/cat_assembly_10k.bed"),
@@ -133,7 +133,7 @@ rule metabinner_coverage:
         """
 rule metabinner_prepare:
     input:
-        contig=rules.cat_filter_length.output,
+        contig=os.path.join(RESULTS_DIR, "assembly/cat_assembly_filter.fasta"),
         bin=rules.metabinner_install.output.dbs
     output:
         cont_t=temp(RESULTS_DIR + "/assembly" + "/cat_assembly_filter" + ".fa"),        
@@ -143,8 +143,8 @@ rule metabinner_prepare:
     conda:
         os.path.join(ENV_DIR, "metabinner.yaml")
     log:
-        out=os.path.join(RESULTS_DIR, "logs/metabinner_prepare/{sid}.out.log"),
-        err=os.path.join(RESULTS_DIR, "logs/metabinner_prepare/{sid}.err.log")
+        out=os.path.join(RESULTS_DIR, "logs/metabinner_prepare.out.log"),
+        err=os.path.join(RESULTS_DIR, "logs/metabinner_prepare.err.log")
     message:
         "Prepare fasta and kmer file for Metabinner"
     shell:
