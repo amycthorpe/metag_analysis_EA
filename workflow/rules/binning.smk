@@ -136,8 +136,8 @@ rule metabinner_prepare:
         contig=os.path.join(RESULTS_DIR, "assembly/cat_assembly_filter.fasta"),
         bin=rules.metabinner_install.output.dbs
     output:
-        cont_t=temp(RESULTS_DIR + "/assembly" + "/cat_assembly_filter" + ".fa"),        
-        cont=RESULTS_DIR + "/bins/metabinner_" + str(config["metabinner"]["length"]) +".fa",        
+        cont_t=temp(RESULTS_DIR + "/assembly" + "/cat_assembly_filter_" + str(config["metabinner"]["length"]) + ".fa"),        
+        cont=RESULTS_DIR + "/bins/metabinner_" + str(config["metabinner"]["length"]) + ".fa",        
         kmer_t=temp(RESULTS_DIR + "/assembly" + "/filter_kmer_4_f" + str(config["metabinner"]["length"]) + ".csv"),
         kmer=RESULTS_DIR + "/bins/kmer_4_f" + str(config["metabinner"]["length"]) + ".csv"
     conda:
