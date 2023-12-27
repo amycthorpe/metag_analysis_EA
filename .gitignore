@@ -149,3 +149,6 @@ phylodb**
 phylodb/**
 reference_bins/*
 references_bins/
+localDB**
+localDB/**
+*localDB*
