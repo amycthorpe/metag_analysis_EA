@@ -131,6 +131,7 @@ rule metabinner_coverage:
         cat {output.temp} | awk '{{if ($2>{config[metabinner][length]}) print $0 }}' | cut -f -1,4- > {output.final} && 
         date) 2> {log.err} > {log.out}
         """
+
 rule metabinner_prepare:
     input:
         contig=os.path.join(RESULTS_DIR, "assembly/cat_assembly_filter.fasta"),

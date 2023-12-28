@@ -153,14 +153,14 @@ mapping:
   threads: 24
 
 metabat2:
-  threads: 48
+  threads: 56
 
 concoct:
-  threads: 48
+  threads: 64
 
 metabinner:
   length: 2000
-  threads: 48
+  threads: 64
 
 dasTool:
   threads: 64
@@ -171,7 +171,7 @@ checkm:
   git_path: "https://github.com/chklovski/CheckM2"
 
 drep:
-  threads: 48
+  threads: 64
   comp: 70
   cont: 16
 

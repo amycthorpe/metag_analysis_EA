@@ -28,16 +28,16 @@ rule prepare_dasTool:
         concoct=rules.concoct.output,
         metabinner=rules.metabinner.output
     output:
-        metabatout=os.path.join(RESULTS_DIR, "bins/{sid}/dastool/metabat_das.tsv"),
-        concoctout=os.path.join(RESULTS_DIR, "bins/{sid}/dastool/concoct_das.tsv"),
-        metabinnerout=os.path.join(RESULTS_DIR, "bins/{sid}/dastool/metabinner_das.tsv")
+        metabatout=os.path.join(RESULTS_DIR, "bins/dastool/metabat_das.tsv"),
+        concoctout=os.path.join(RESULTS_DIR, "bins/dastool/concoct_das.tsv"),
+        metabinnerout=os.path.join(RESULTS_DIR, "bins/dastool/metabinner_das.tsv")
     params:
-        value="{sid}"
+        value="bin"
     conda: 
         os.path.join(ENV_DIR, "dastool.yaml")
     log:
-        out=os.path.join(RESULTS_DIR, "logs/prepare_dasTool/{sid}.out.log"),
-        err=os.path.join(RESULTS_DIR, "logs/prepare_dasTool/{sid}.err.log")
+        out=os.path.join(RESULTS_DIR, "logs/prepare_dasTool.out.log"),
+        err=os.path.join(RESULTS_DIR, "logs/prepare_dasTool.err.log")
     message:
         "Preparing files for DasTool"
     shell:
@@ -55,12 +55,12 @@ rule dasTool:
         metabinner=rules.prepare_dasTool.output.metabinnerout,
         cont=rules.cat_filter_length.output
     output:
-        os.path.join(RESULTS_DIR, "bins/{sid}/dastool/das_DASTool_summary.tsv")
+        os.path.join(RESULTS_DIR, "bins/dastool/das_DASTool_summary.tsv")
     conda:
         os.path.join(ENV_DIR, "dastool.yaml")
     log:
-        out=os.path.join(RESULTS_DIR, "logs/dasTool/{sid}.out.log"),
-        err=os.path.join(RESULTS_DIR, "logs/dasTool/{sid}.err.log")
+        out=os.path.join(RESULTS_DIR, "logs/dasTool.out.log"),
+        err=os.path.join(RESULTS_DIR, "logs/dasTool.err.log")
     threads:
         config["dasTool"]["threads"]
     message:
@@ -76,12 +76,12 @@ rule checkm:
     input:
         rules.dasTool.output
     output:
-        os.path.join(RESULTS_DIR, "bins/{sid}/{sid}_dastool_checkm.tsv")
+        os.path.join(RESULTS_DIR, "bins/dastool_checkm.tsv")
     conda:
         os.path.join(ENV_DIR, "checkm.yaml")
     log:
-        out=os.path.join(RESULTS_DIR, "logs/dasTool_checkm/{sid}.out.log"),
-        err=os.path.join(RESULTS_DIR, "logs/dasTool_checkm/{sid}.err.log")
+        out=os.path.join(RESULTS_DIR, "logs/dasTool_checkm.out.log"),
+        err=os.path.join(RESULTS_DIR, "logs/dasTool_checkm.err.log")
     threads:
         config["checkm"]["threads"]
     message:
@@ -93,7 +93,7 @@ rule checkm:
 
 rule drep_prepare:
     input:
-        check=expand(rules.checkm.output, sid=SAMPLES.index)
+        check=rules.checkm.output
     output:
         final=os.path.join(RESULTS_DIR, "bins/checkmbeforedrep.tsv"),
         temp=temp(os.path.join(RESULTS_DIR, "bins/checkm_temp.tsv"))
@@ -113,7 +113,7 @@ def symlink_relative(files, input_dir, output_dir):
         
 rule get_all_bins:
     input:
-        bins=expand(os.path.join(RESULTS_DIR, "bins/{sid}/dastool/das_DASTool_summary.tsv"),sid=SAMPLES.index)
+        bins=os.path.join(RESULTS_DIR, "bins/dastool/das_DASTool_summary.tsv")
     output:
         directory(os.path.join(RESULTS_DIR,"bins/binsbeforedrep")),
     run:
