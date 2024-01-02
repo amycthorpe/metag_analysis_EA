@@ -81,5 +81,4 @@ rule checkm_final:
         "(date && "
         "export CHECKM2DB={params.db} && "
         "{params.checkm2} predict --threads {threads} -x {params.ext} --input {input} --output-directory $(dirname {output.tsv}) --force && "
-        "checkm lineage_wf -t {threads} -f {output}.tsv --tab_table -x fa {input.drep} {output} && "
         "date) &> > (tee {log}"
