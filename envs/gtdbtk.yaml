@@ -4,4 +4,5 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - gtdbtk=2.1
+  - gtdbtk=2.3.2
+  - numpy=1.23.1

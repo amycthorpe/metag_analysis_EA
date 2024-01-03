@@ -177,4 +177,4 @@ drep:
 
 gtdbtk:
   threads: 64
-  path: "/scratch/users/gmichoud/DB/release207_v2"
+  path: "/hdd0/susbus/databases/gtdbtk/release214"
